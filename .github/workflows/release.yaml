@@ -89,6 +89,9 @@ jobs:
           if npm view "jaro@${{ needs.version.outputs.version }}" version >/dev/null 2>&1; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
+      # Trusted publishing needs npm 11.5.1 or later.
+      - if: steps.exists.outputs.skip != 'true'
+        run: npm install -g npm@latest
       - if: steps.exists.outputs.skip != 'true'
         run: |
           pnpm install --frozen-lockfile
@@ -97,8 +100,6 @@ jobs:
           pnpm build
           npm version "${{ needs.version.outputs.version }}" --no-git-tag-version
           npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   python-sdist:
     needs: version
