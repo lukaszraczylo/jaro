@@ -53,7 +53,7 @@ jobs:
 
   version:
     needs: go
-    if: always() && needs.go.result == 'success'
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.v.outputs.version }}
