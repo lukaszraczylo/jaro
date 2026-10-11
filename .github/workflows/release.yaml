@@ -86,7 +86,7 @@ jobs:
       - name: Skip when this version is already published
         id: exists
         run: |
-          if npm view "jaro@${{ needs.version.outputs.version }}" version >/dev/null 2>&1; then
+          if npm view "@lukaszraczylo/jaro@${{ needs.version.outputs.version }}" version >/dev/null 2>&1; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
       # Trusted publishing needs npm 11.5.1 or later.

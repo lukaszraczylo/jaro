@@ -16,7 +16,7 @@ Node 22.12 or later runs the dev tools (vitest 5). The built library needs Node 
 ## API
 
 ```ts
-import { stringify, parse, encodeBinary, decodeBinary, JaroError } from "jaro";
+import { stringify, parse, encodeBinary, decodeBinary, JaroError } from "@lukaszraczylo/jaro";
 
 const text = stringify({ users: [{ id: 1, name: "ann" }, { id: 2, name: "bob" }] });
 // users:[|id name| 1 ann 2 bob]

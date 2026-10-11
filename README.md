@@ -14,7 +14,7 @@ Site and benchmarks: <https://jaro.raczylo.com>
 ```sh
 go get github.com/lukaszraczylo/jaro                 # library
 go install github.com/lukaszraczylo/jaro/cmd/jaro@latest   # CLI
-npm install jaro                                     # TypeScript
+npm install @lukaszraczylo/jaro                                  # TypeScript
 pip install jaro                                     # Python
 pip install jaro-native                              # optional Rust binary decoder
 ```

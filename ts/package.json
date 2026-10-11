@@ -1,5 +1,5 @@
 {
-  "name": "jaro",
+  "name": "@lukaszraczylo/jaro",
   "version": "0.1.0",
   "description": "JARO: a JSON-model data format with a compact text form and a binary form",
   "type": "module",
