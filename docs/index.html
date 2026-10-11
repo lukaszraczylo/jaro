@@ -70,13 +70,22 @@ pre{margin:0;overflow-x:auto;font-family:var(--mono);font-size:14.5px;line-heigh
 .ex{background:var(--panel);border:1px solid var(--line);padding:16px 20px;margin:0 0 28px;max-width:640px}
 .links{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 32px;font-family:var(--mono);font-size:15px}
 a{color:var(--accent)}
+.spec-body{max-width:860px}
+.spec-body h3{font-family:var(--display);font-size:1.3rem;margin:34px 0 8px}
+.spec-body h4{font-size:15px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:24px 0 6px}
+.spec-body p,.spec-body li{max-width:75ch}
+.spec-body code{font-family:var(--mono);font-size:14px;background:var(--soft);padding:1px 5px}
+.spec-body pre{background:var(--panel);border:1px solid var(--line);padding:14px 18px;margin:12px 0}
+.spec-body table.spec{min-width:640px}
+.spec-body table.spec td,.spec-body table.spec th{text-align:left;font-family:var(--body);font-size:15px;vertical-align:top}
+.spec-body table.spec td code{font-size:13.5px;white-space:nowrap}
 </style>
 </head>
 <body>
 <main>
 <h1>JARO</h1>
 <p class="lede">One JSON-compatible data model in two encodings. The text form uses fewer bytes and fewer LLM tokens than JSON or YAML. The binary form is the smallest and the fastest to decode. Libraries for Go, TypeScript and Python. Anchors, spreads, tables, comments and schema validation are part of the format.</p>
-<p class="links"><a href="https://github.com/lukaszraczylo/jaro">GitHub</a><a href="https://github.com/lukaszraczylo/jaro/blob/main/SPEC.md">Specification</a><a href="https://github.com/lukaszraczylo/jaro/releases">Releases</a><a href="https://pkg.go.dev/github.com/lukaszraczylo/jaro">pkg.go.dev</a></p>
+<p class="links"><a href="https://github.com/lukaszraczylo/jaro">GitHub</a><a href="#spec">Specification</a><a href="https://github.com/lukaszraczylo/jaro/releases">Releases</a><a href="https://pkg.go.dev/github.com/lukaszraczylo/jaro">pkg.go.dev</a></p>
 <pre class="ex"># comment
 name:platform replicas:3 beta:true audit:~
 owners:[team-a team-b]
@@ -116,6 +125,45 @@ pip install jaro-native   # optional Rust decoder</pre></div>
   <div class="ctl" id="dsctl" role="group" aria-label="Dataset"></div>
   <p class="sub" id="dsdesc"></p>
   <div class="detail" id="detail"></div>
+</section>
+
+<section id="spec">
+  <h2>Specification</h2>
+  <p class="sub">Version 0.1, frozen for text v1 and binary v1. The same text lives in <a href="https://github.com/lukaszraczylo/jaro/blob/main/SPEC.md">SPEC.md</a>.</p>
+  <div class="spec-body">
+<!--SPEC-->
+<p>Status: <b>frozen for text v1 and binary v1</b>. Golden vectors in <code>jaro_test.go</code> (<code>TestGoldenVectors</code>) fail if either format changes. A change needs a new binary version byte or a new media type.</p>
+<h3>Data model</h3>
+<p>null, bool, int64, float64 (finite), string (UTF-8), array, object (string keys, unique). Integral floats below 2^53 are integers. Object key order is not significant; encoders write keys sorted. Keys are unique: a decoder rejects an object, table header, keyed-table row set or binary object that repeats a key. A <code>*name</code> spread may override earlier members and a later member may override spread keys.</p>
+<h3>Text (<code>application/jaro</code>)</h3>
+<p>Whitespace (space, tab, CR, LF) separates tokens. <code>#</code> starts a comment to end of line.</p>
+<pre>document = value | member*            ; a top-level object may omit braces
+value    = scalar | object | keyed | array | table | anchor | ref
+object   = &quot;{&quot; (member | spread)* &quot;}&quot;
+keyed    = &quot;{&quot; &quot;|&quot; column+ &quot;|&quot; (name cell*)* &quot;}&quot;  ; object of row objects; each row has one cell per key
+
+member   = key &quot;:&quot; value
+key      = bare | quoted
+spread   = &quot;*&quot; name                   ; merges an anchored object, later keys win
+array    = &quot;[&quot; value* &quot;]&quot;
+table    = &quot;[&quot; &quot;|&quot; column+ &quot;|&quot; cell* &quot;]&quot;   ; cell count must be a multiple of key count
+column   = key (&quot;{&quot; column+ &quot;}&quot;)?        ; sub-columns: the column holds an object, one cell per sub-column
+cell     = value | &quot;^&quot;                 ; &quot;^&quot; alone marks a key the row does not have
+anchor   = &quot;&amp;&quot; name value             ; names are unique per document
+ref      = &quot;*&quot; name                   ; independent copy of the anchored value
+scalar   = &quot;~&quot; | &quot;true&quot; | &quot;false&quot; | number | bare | quoted</pre>
+<ul><li><code>bare</code> is any run of bytes that contains no delimiter. Delimiters: whitespace, <code>&quot; { } [ ] | : \ #</code>. A bare token that parses as a number is a number; <code>~</code>, <code>true</code>, <code>false</code> are reserved; a leading <code>&amp;</code> or <code>*</code> is reserved; <code>^</code> alone is reserved inside tables.</li><li><code>number</code> is decimal: <code>-</code>? digits (<code>.</code> digits?)? or <code>-</code>? <code>.</code> digits, then an optional exponent (<code>e</code> or <code>E</code>, optional sign, digits). Int64 when it parses as one, otherwise float64. Any other token, including <code>1_000</code>, <code>0x10</code>, <code>+5</code>, <code>1e</code>, <code>Inf</code> and <code>NaN</code>, is a string. Encoders write floats in the shortest form that round-trips in the form of Go <code>strconv.FormatFloat(f, &#x27;g&#x27;, -1, 64)</code>: an exponent such as <code>1.2345675e+06</code> when the decimal exponent is below -4 or at least 6, and plain digits otherwise, and quote strings that start like a number.</li><li><code>quoted</code> escapes: <code>\&quot; \\ \n \r \t \uXXXX</code> with exactly four hex digits. A high surrogate must be followed by <code>\uXXXX</code> with a low surrogate and the pair is one code point. A lone surrogate is an error. Encoders quote any string that is empty, reserved, number-like, starts with <code>&amp;</code> or <code>*</code>, or contains a delimiter.</li><li>Encoders emit a table for an array of 2 or more objects with identical, non-empty key sets, with keys sorted.</li><li>Encoders also emit a table when the objects differ in keys, if at least half of the cells would be present. The header lists the union of keys and each missing key becomes the bare cell <code>^</code>. A decoder omits that key from the row. A string equal to <code>^</code> is quoted.</li><li>When every row holds an object under a key, and those objects form a table with at least two keys, the column is written as <code>key{sub1 sub2}</code> and each row gives one cell per sub-column. Nesting stops at 8 levels. A row whose nested object lacks a sub-key writes <code>^</code> for it.</li><li>Encoders write an object as a keyed table <code>{|k1 k2| name cell cell name cell cell}</code> when it has at least two entries, every value is an object, the union of keys has at least two keys, and at least half of the cells would be present. Text written with this rule is not readable by a decoder that predates it.</li><li>The binary encoder emits a sparse table instead of an object array when at least 80% of the cells would be present and the keys differ.</li><li>Decoders limit nesting to 512 and reference expansion to 2^24 nodes.</li></ul>
+<h3>Binary (<code>application/jaro-bin</code>)</h3>
+<p>Document = <code>0x0F 0x01</code> value. Unknown version bytes are rejected.</p>
+<div class="scroll"><table class="spec"><thead><tr><th>Tag</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0x00</code> <code>0x01</code> <code>0x02</code></td><td>null, false, true</td></tr><tr><td><code>0x03</code></td><td>int: zigzag varint</td></tr><tr><td><code>0x04</code></td><td>float64, 8 bytes little endian</td></tr><tr><td><code>0x05</code></td><td>string: uvarint length, bytes</td></tr><tr><td><code>0x06</code></td><td>string reference: uvarint pool index</td></tr><tr><td><code>0x07</code></td><td>array: uvarint n, n values</td></tr><tr><td><code>0x08</code></td><td>object: uvarint n, n pairs of (string, value)</td></tr><tr><td><code>0x09</code></td><td>table: uvarint columns, key strings, uvarint rows, one column per key</td></tr><tr><td><code>0x0A</code></td><td>anchor: the next value gets the next anchor index (pre-order)</td></tr><tr><td><code>0x0B</code></td><td>anchor reference: uvarint index; the anchor must be complete</td></tr><tr><td><code>0x0C</code></td><td>column array: uvarint n, column</td></tr><tr><td><code>0x0D</code> | sparse table: uvarint columns, key strings, uvarint rows, then per column a flag byte (0 = every row has the key, 1 = a bitmap of <code>ceil(rows/8)</code> bytes follows, bit i set when row i has it) and a column of the present values</td></tr><tr><td><code>0x40</code>-<code>0x5F</code></td><td>string of length tag&amp;31</td></tr><tr><td><code>0x80</code>-<code>0xFF</code></td><td>integer tag&amp;127</td></tr></tbody></table></div>
+<p>String pool: every string of 2 or more bytes (keys and values) is appended to the pool when first read; a later equal string is written as <code>0x06</code>.</p>
+<p>Column (n values): kind byte, then</p>
+<div class="scroll"><table class="spec"><thead><tr><th>Kind</th><th>Payload</th></tr></thead><tbody><tr><td>0 generic</td><td>n tagged values</td></tr><tr><td>1 delta</td><td>n zigzag varints, each the difference from the previous (start 0, wrapping int64)</td></tr><tr><td>2 decimal</td><td>scale k (0-6), n zigzag varints m; value = m / 10^k, integer when integral</td></tr><tr><td>3 dict</td><td>uvarint d, d strings, n uvarint indexes</td></tr><tr><td>4 bool</td><td>ceil(n/8) bytes, bit i = value i (LSB first)</td></tr><tr><td>5 object</td><td>uvarint k, k key strings, k columns of n values</td></tr></tbody></table></div>
+<p>Floats are finite: a decoder rejects NaN and Inf. In a sparse-table bitmap the bits past the last row must be zero. Decoders check counts against remaining input (rows and column values may be at most 8x the remaining bytes, and a node budget of 4M + 32 per input byte caps allocation).</p>
+<h3>Schema</h3>
+<p>A schema is JARO data; see README. Type strings: <code>any str int num bool null enum(a,b) either(t1,t2)</code>, arguments <code>(lo..hi)</code> or, for <code>str</code>, <code>(/regex/)</code>; trailing <code>?</code> allows null. Object keys ending in <code>?</code> are optional; key <code>...</code> types extra fields. <code>[T]</code> and <code>[T lo..hi]</code> are lists. Other scalars are literals.</p>
+<!--/SPEC-->
+  </div>
 </section>
 
 <p class="note">Measured by <code>jaro/bench</code> on 2026-10-11 (Go, macOS). Sizes are bytes of one document. gzip and zstd use default levels. Decode time is one full decode into <code>any</code>, except <b>JARO Parse</b>, which decodes into a flat document and appears for decode time and allocations only. <b>JARO</b> is the text form and <b>JAROB</b> the binary form. <b>go-json</b> is a faster JSON library, shown as the reference for tuned JSON. Tokens count the text form with the <code>o200k_base</code> tokenizer; the binary form has no token count. The real-world files are public corpora and live API responses that were not written for JARO.</p>
