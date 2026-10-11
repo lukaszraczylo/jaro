@@ -1,0 +1,25 @@
+{"kind":"protocol","metric":"geomean_ratio","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"12x100 iters min per cell, 18 cells","stop":{"trials":30,"no_improve":8}}
+{"id":"01","mutation":"baseline","metric":1.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"bin key(): read short/long/ref strings directly, no boxing into any (arena cells +1.2% drift = untouched-code noise)","metric":0.9567,"delta":-0.043300000000000005,"kept":"KEEP"}
+{"id":"03","mutation":"bin pool entries cache boxed any (32B pooled struct)","metric":0.9747,"delta":0.018000000000000016,"kept":"revert"}
+{"id":"04","mutation":"text escaped strings: shared 16K strings.Builder, substrings, prescan sizes it","metric":0.9186,"delta":-0.03810000000000002,"kept":"KEEP"}
+{"id":"05","mutation":"text tableRows: collect rows on d.stk, exact-size copy (REL 0.992 x2 interleaved vs kept)","metric":0.9112,"delta":-0.007399999999999962,"kept":"revert"}
+{"id":"06","mutation":"text objBody: per-depth map size hint from last closed object (REL 1.004)","metric":0.9219,"delta":0.0033000000000000806,"kept":"revert"}
+{"id":"07","mutation":"text intern map presized from input length (text group REL 0.985, overall 1.0065 noisy)","metric":0.9186,"delta":0.0,"kept":"revert"}
+{"id":"08","mutation":"text adaptive intern freeze after 256 entries if hit rate <1/8 (REL 1.001)","metric":0.9186,"delta":0.0,"kept":"revert"}
+{"id":"09","mutation":"bin pooled-ref boxed cache as lazily grown []any (github_issues bin 1.41x worse)","metric":0.95,"delta":0.031399999999999983,"kept":"revert"}
+{"id":"10","mutation":"bin pooled-ref boxed cache, direct-mapped 256 (bin group REL 0.983, overall 0.995)","metric":0.9186,"delta":0.0,"kept":"revert"}
+{"id":"11","mutation":"arena: unescape straight into Doc.extra (no boxed string, no double copy); split textDec.unescape (REL 0.985 interleaved)","metric":0.9052,"delta":-0.013399999999999967,"kept":"KEEP"}
+{"id":"12","mutation":"arena node estimate also counts [ and { (canada arena rel 0.986, overall 1.008)","metric":0.9052,"delta":0.0,"kept":"revert"}
+{"id":"13","mutation":"arena scalar uses shared fastNum (plain ints/decimals, no strconv); long decimals bail via IndexByte (REL 0.989 x2, max cell 1.027)","metric":0.895,"delta":-0.010199999999999987,"kept":"KEEP"}
+{"id":"14","mutation":"quoted strings: IndexByte quote/backslash scan, skip intern lookup over 48 bytes (text+arena) (REL 0.973)","metric":0.8706,"delta":-0.024399999999999977,"kept":"KEEP"}
+{"id":"15","mutation":"unescape: bulk-copy runs between escapes via cached IndexByte quote/backslash (REL 0.952)","metric":0.8285,"delta":-0.042100000000000026,"kept":"KEEP"}
+{"id":"16","mutation":"arena uniqueKids: generation-mark array instead of per-object map (npm arena -12%, REL 0.982)","metric":0.8137,"delta":-0.014800000000000035,"kept":"KEEP"}
+{"id":"17","mutation":"ws(): locals instead of d.pos field per byte (REL 1.001)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"18","mutation":"quoted/arena: hand-scan first 24 bytes before IndexByte (plainEnd helper) (REL 1.018)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"19","mutation":"bin pooled-ref boxed cache in 256-entry chunks (npm bin -9%, github bin +9.6% => max cell rule fails)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"20","mutation":"bin pooled refs: cache only from second reference (seen bitset) (github bin 1.33x worse)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"21","mutation":"text readRow: scalar cells call token() directly (REL 0.9955)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"22","mutation":"bin table/objColumn: decode columns into one flat slice, fill maps row-major (bin REL 0.987, overall 0.995)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"23","mutation":"isNumber without closure (REL 1.002)","metric":0.8137,"delta":0.0,"kept":"revert"}
+{"id":"24","mutation":"arena key id direct-mapped cache before map lookup (arena rel 0.982, overall 0.999)","metric":0.8137,"delta":0.0,"kept":"revert"}

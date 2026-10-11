@@ -1,0 +1,11 @@
+{"kind":"protocol","metric":"sum_ns_per_op","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"300x x5 min","stop":{"trials":10,"no_improve":4}}
+{"id":"01","mutation":"baseline (= v1 trial 02 tree; noise measured 0.05%)","metric":3982980.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"binary dict column: box strings once (allocs -9%)","metric":3923475.0,"delta":-59505.0,"kept":"KEEP"}
+{"id":"03","mutation":"text number parse: skip ParseInt on non-int tokens (no error alloc)","metric":3874995.0,"delta":-48480.0,"kept":"KEEP"}
+{"id":"04","mutation":"pool encoder buffers, return exact-size clone","metric":3765324.0,"delta":-109671.0,"kept":"KEEP"}
+{"id":"05","mutation":"encoders: tableData gathers cells with one map lookup each","metric":3394673.0,"delta":-370651.0,"kept":"KEEP"}
+{"id":"06","mutation":"text decode: no string alloc for ~/true/false/short ints","metric":3285339.0,"delta":-109334.0,"kept":"KEEP"}
+{"id":"07","mutation":"text key() without boxing, letter-start fast path (allocs -6%)","metric":3279190.0,"delta":-6149.0,"kept":"revert"}
+{"id":"08","mutation":"binary encoder: object columns reuse tableData cells (no second lookup pass)","metric":3206806.0,"delta":-78533.0,"kept":"KEEP"}
+{"id":"09","mutation":"classifyStrings: bail out once distinct count exceeds n/2","metric":3163498.0,"delta":-43308.0,"kept":"KEEP"}
+{"id":"10","mutation":"pool binary string-pool maps (clear + reuse)","metric":3131213.0,"delta":-32285.0,"kept":"KEEP"}

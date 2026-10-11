@@ -1,0 +1,134 @@
+{
+  "canada.json": {
+    "json": {
+      "enc_ms": 27.091,
+      "dec_ms": 16.2067,
+      "bytes": 2090234
+    },
+    "yaml": {
+      "enc_ms": 247.8492,
+      "dec_ms": 305.3995,
+      "bytes": 3089399
+    },
+    "jaro": {
+      "enc_ms": 81.4531,
+      "dec_ms": 24.2975,
+      "bytes": 2090208
+    },
+    "jaro-bin": {
+      "enc_ms": 44.9303,
+      "dec_ms": 9.9295,
+      "bytes": 1112072
+    }
+  },
+  "citm_catalog.json": {
+    "json": {
+      "enc_ms": 2.1183,
+      "dec_ms": 4.627,
+      "bytes": 500299
+    },
+    "yaml": {
+      "enc_ms": 78.7743,
+      "dec_ms": 112.1735,
+      "bytes": 588331
+    },
+    "jaro": {
+      "enc_ms": 10.5187,
+      "dec_ms": 14.7006,
+      "bytes": 228077
+    },
+    "jaro-bin": {
+      "enc_ms": 16.1723,
+      "dec_ms": 9.8878,
+      "bytes": 80129
+    }
+  },
+  "github_issues.json": {
+    "json": {
+      "enc_ms": 1.7021,
+      "dec_ms": 1.6101,
+      "bytes": 586232
+    },
+    "yaml": {
+      "enc_ms": 26.3511,
+      "dec_ms": 29.2057,
+      "bytes": 611160
+    },
+    "jaro": {
+      "enc_ms": 15.8619,
+      "dec_ms": 6.1725,
+      "bytes": 489890
+    },
+    "jaro-bin": {
+      "enc_ms": 3.7143,
+      "dec_ms": 3.1443,
+      "bytes": 338660
+    }
+  },
+  "npm_express.json": {
+    "json": {
+      "enc_ms": 2.7538,
+      "dec_ms": 2.9251,
+      "bytes": 823554
+    },
+    "yaml": {
+      "enc_ms": 76.9453,
+      "dec_ms": 90.4213,
+      "bytes": 901268
+    },
+    "jaro": {
+      "enc_ms": 22.2323,
+      "dec_ms": 17.9035,
+      "bytes": 651129
+    },
+    "jaro-bin": {
+      "enc_ms": 13.8868,
+      "dec_ms": 13.8993,
+      "bytes": 288935
+    }
+  },
+  "recipe_book.json": {
+    "json": {
+      "enc_ms": 0.0644,
+      "dec_ms": 0.0606,
+      "bytes": 15705
+    },
+    "yaml": {
+      "enc_ms": 1.4042,
+      "dec_ms": 1.6185,
+      "bytes": 16450
+    },
+    "jaro": {
+      "enc_ms": 0.4675,
+      "dec_ms": 0.3439,
+      "bytes": 10919
+    },
+    "jaro-bin": {
+      "enc_ms": 0.3315,
+      "dec_ms": 0.2507,
+      "bytes": 8045
+    }
+  },
+  "twitter.json": {
+    "json": {
+      "enc_ms": 1.2749,
+      "dec_ms": 2.0924,
+      "bytes": 466906
+    },
+    "yaml": {
+      "enc_ms": 32.5884,
+      "dec_ms": 37.0575,
+      "bytes": 506544
+    },
+    "jaro": {
+      "enc_ms": 9.0975,
+      "dec_ms": 7.5778,
+      "bytes": 330143
+    },
+    "jaro-bin": {
+      "enc_ms": 5.0219,
+      "dec_ms": 5.2839,
+      "bytes": 139016
+    }
+  }
+}

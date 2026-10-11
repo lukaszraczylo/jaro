@@ -1,0 +1,52 @@
+{
+  "name": "jaro",
+  "version": "0.1.0",
+  "description": "JARO: a JSON-model data format with a compact text form and a binary form",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "bench": "pnpm build && node bench/bench.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "~5.9.3",
+    "vitest": "5.0.3",
+    "yaml": "2.9.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukaszraczylo/jaro.git",
+    "directory": "ts"
+  },
+  "homepage": "https://jaro.raczylo.com",
+  "keywords": [
+    "jaro",
+    "serialization",
+    "json",
+    "binary",
+    "data-format"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

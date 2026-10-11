@@ -1,0 +1,18 @@
+{"kind":"protocol","metric":"decode_sum_ms","direction":"lower","threshold":{"value":1.5,"relative":true},"budget":"6 corpus files x (text parse + binary decode); 5 warmup, min of 15 x ~20ms batches; min of 3 harness runs","stop":{"trials":30,"no_improve":8}}
+{"id":"01","mutation":"baseline","metric":36.2197,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text: regex-free fastNumber scan in token()","metric":34.7918,"delta":-1.427900000000001,"kept":"KEEP"}
+{"id":"03","mutation":"bin: one DataView per decoder instead of per float","metric":30.6844,"delta":-4.107400000000002,"kept":"KEEP"}
+{"id":"04","mutation":"text: number scan from token start, no separate delimiter pre-scan","metric":26.64,"delta":-4.0443999999999996,"kept":"KEEP"}
+{"id":"05","mutation":"decoders: hasDecoded (o[k]!==undefined && hasOwn) for dup-key check [normalised to concurrent base: 27.4753 vs 27.4554]","metric":26.66,"delta":0.019999999999999574,"kept":"revert"}
+{"id":"06","mutation":"bin: fillColumn helper hoists __proto__ check out of column fill loops [A/B ratio 0.9875]","metric":26.3068,"delta":-0.3332000000000015,"kept":"revert"}
+{"id":"07","mutation":"bin: key() fast path for T_REF/short-string tags (bin -4.4%, A/B ratio 0.9805)","metric":26.1205,"delta":-0.5195000000000007,"kept":"KEEP"}
+{"id":"08","mutation":"text: array() sends numeric-start elements straight to token() (A/B 0.9681)","metric":25.2877,"delta":-0.8327999999999989,"kept":"KEEP"}
+{"id":"09","mutation":"hasLoneSurrogate via native isWellFormed (twitter text -20%; cell-min ratio 0.9791)","metric":24.7594,"delta":-0.5283000000000015,"kept":"KEEP"}
+{"id":"10","mutation":"text: token() first-char dispatch for ~/true/false/numeric (cell-min 0.9786)","metric":24.2296,"delta":-0.529799999999998,"kept":"KEEP"}
+{"id":"11","mutation":"text: quoted() escape-free fast scan + single slice (cell-min 0.9727)","metric":23.5682,"delta":-0.6614000000000004,"kept":"KEEP"}
+{"id":"12","mutation":"text: predictive per-depth key cache in objBody (cell-min 0.9983)","metric":23.5275,"delta":-0.04070000000000107,"kept":"revert"}
+{"id":"13","mutation":"bin: inline T_FLOAT read in T_ARR loop (canada bin -5%, cell-min 0.9986)","metric":23.5352,"delta":-0.03300000000000125,"kept":"revert"}
+{"id":"14","mutation":"hasKey via Object.hasOwn (cell-min 0.9989)","metric":23.5423,"delta":-0.025900000000000034,"kept":"revert"}
+{"id":"15","mutation":"text: ws() with local pos (cell-min 1.0021)","metric":23.6177,"delta":0.04949999999999832,"kept":"revert"}
+{"id":"16","mutation":"bin: uvarint single-byte fast path (cell-min 0.9864 but text-noise; run-min 0.9964)","metric":23.483,"delta":-0.08520000000000039,"kept":"revert"}
+{"id":"17","mutation":"text: objBody sends string/numeric-start values straight to quoted/token (cell-min 0.9986)","metric":23.5352,"delta":-0.03300000000000125,"kept":"revert"}

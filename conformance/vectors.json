@@ -1,0 +1,6614 @@
+{
+ "text": [
+  {
+   "name": "bigint",
+   "jaro": "big:1152921504606846976 max:9223372036854775807 min:-9223372036854775808",
+   "json": {
+    "big": 1152921504606846976,
+    "max": 9223372036854775807,
+    "min": -9223372036854775808
+   }
+  },
+  {
+   "name": "decimal-mixed",
+   "jaro": "[705137.6 7512.906316 1.328554778e+08 4.300036195495e+11]",
+   "json": [
+    705137.6,
+    7512.906316,
+    132855477.8,
+    430003619549.5
+   ]
+  },
+  {
+   "name": "emptyobj",
+   "jaro": "{}",
+   "json": {}
+  },
+  {
+   "name": "keyed",
+   "jaro": "other:{a:1 b:{c:2}} versions:{|main n name| \"1.0.0\" a.js 1 x \"1.1.0\" ^ 2 x \"2.0.0\" b.js ~ \"^\"}",
+   "json": {
+    "other": {
+     "a": 1,
+     "b": {
+      "c": 2
+     }
+    },
+    "versions": {
+     "1.0.0": {
+      "main": "a.js",
+      "n": 1,
+      "name": "x"
+     },
+     "1.1.0": {
+      "n": 2,
+      "name": "x"
+     },
+     "2.0.0": {
+      "main": "b.js",
+      "n": null,
+      "name": "^"
+     }
+    }
+   }
+  },
+  {
+   "name": "keyquote",
+   "jaro": "\"\":2 \"1\":3 \"a b\":1",
+   "json": {
+    "": 2,
+    "1": 3,
+    "a b": 1
+   }
+  },
+  {
+   "name": "mixedarr",
+   "jaro": "[{a:1} {b:2} s]",
+   "json": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    },
+    "s"
+   ]
+  },
+  {
+   "name": "nested",
+   "jaro": "o:{x:[1 [] {}]}",
+   "json": {
+    "o": {
+     "x": [
+      1,
+      [],
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "name": "nestedcols",
+   "jaro": "rows:[|id t user{geo{lat lon} id name}| 1 x 1.5 2.5 7 ann 2 y 3.5 4.5 ^ bob 3 z ^ ^ 8 \"^\"]",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "t": "x",
+      "user": {
+       "geo": {
+        "lat": 1.5,
+        "lon": 2.5
+       },
+       "id": 7,
+       "name": "ann"
+      }
+     },
+     {
+      "id": 2,
+      "t": "y",
+      "user": {
+       "geo": {
+        "lat": 3.5,
+        "lon": 4.5
+       },
+       "name": "bob"
+      }
+     },
+     {
+      "id": 3,
+      "t": "z",
+      "user": {
+       "geo": {},
+       "id": 8,
+       "name": "^"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "name": "nestednull",
+   "jaro": "[|a u| 1 {x:1 y:2} 2 ~ 3 {x:3 y:4}]",
+   "json": [
+    {
+     "a": 1,
+     "u": {
+      "x": 1,
+      "y": 2
+     }
+    },
+    {
+     "a": 2,
+     "u": null
+    },
+    {
+     "a": 3,
+     "u": {
+      "x": 3,
+      "y": 4
+     }
+    }
+   ]
+  },
+  {
+   "name": "quoting",
+   "jaro": "bs:\"a\\\\b\" col:\"a:b\" ctl:\"\\u0001\" dot:\".5\" empty:\"\" neg:\"-1\" nl:\"a\\nb\" null:\"~\" num:\"123\" q:\"say \\\"x\\\"\" sp:\"a b\" t:\"true\" uni:\"héllo ✓\"",
+   "json": {
+    "bs": "a\\b",
+    "col": "a:b",
+    "ctl": "\u0001",
+    "dot": ".5",
+    "empty": "",
+    "neg": "-1",
+    "nl": "a\nb",
+    "null": "~",
+    "num": "123",
+    "q": "say \"x\"",
+    "sp": "a b",
+    "t": "true",
+    "uni": "héllo ✓"
+   }
+  },
+  {
+   "name": "random-dense",
+   "jaro": "rows:[|id loc{x y} note on price tag| 1000 0 82.3 \"red item\" true 723.05 blue 1003 43 82.9 \"blue item\" true 403.57 green 1006 3 15.2 \"green item\" true 78.15 amber 1009 34 24.4 \"red item\" true 235.35 violet 1012 19 60.7 \"violet item\" true 665.44 green 1015 10 62.9 \"amber item\" false 679.82 blue 1018 7 63.5 \"blue item\" true 339.74 blue 1021 12 89.4 \"blue item\" true 738.24 red 1024 42 80.9 \"green item\" true 124.29 violet 1027 1 78.6 \"blue item\" true 230.72 green 1030 6 31.5 \"red item\" false 505.04 amber 1033 25 46.6 \"blue item\" true 434.96 amber 1036 4 10.1 \"violet item\" true 468.7 blue 1039 23 31.3 \"violet item\" false 63.03 green 1042 46 8.3 \"amber item\" false 171.46 violet 1045 7 36.3 \"green item\" false 967.82 amber 1048 2 85.8 \"violet item\" true 541.4 red 1051 18 16.2 \"blue item\" true 837.28 red 1054 31 33.9 \"violet item\" true 510.8 blue 1057 43 56.1 \"amber item\" false 151.79 amber 1060 48 88.3 \"green item\" true 377.13 blue 1063 34 45.8 \"violet item\" false 732.45 violet 1066 37 79.9 \"blue item\" true 918.14 green 1069 5 61.9 \"amber item\" false 887.23 violet 1072 23 46.2 \"blue item\" true 572.51 amber 1075 17 3.1 \"green item\" false 35.89 green 1078 43 70.8 \"green item\" false 584.42 red 1081 16 69.3 \"violet item\" false 451.12 red 1084 3 41.3 \"violet item\" true 885.59 red 1087 38 21.6 \"red item\" false 899.37 red 1090 20 81.8 \"green item\" true 120.69 amber 1093 20 73.7 \"blue item\" true 850.69 amber 1096 27 37.5 \"green item\" false 845.6 blue 1099 30 10.6 \"green item\" false 576.56 green 1102 30 40.9 \"red item\" false 308.38 red 1105 1 40.1 \"blue item\" false 659.77 amber 1108 44 78.7 \"violet item\" true 202.46 blue 1111 5 29.8 \"blue item\" false 302.22 amber 1114 0 70.2 \"green item\" false 130.95 violet 1117 43 84 \"amber item\" false 444.47 violet 1120 17 68.9 \"red item\" true 79.45 blue 1123 38 41.1 \"blue item\" false 742.48 amber 1126 19 5.3 \"red item\" true 215.9 amber 1129 42 14.5 \"blue item\" true 143.9 violet 1132 17 64.6 \"violet item\" true 396.45 violet 1135 10 14 \"red item\" true 799.94 amber 1138 1 68.7 \"blue item\" false 796.6 green 1141 1 6.2 \"violet item\" true 587.41 blue 1144 9 16 \"green item\" false 738.48 blue 1147 22 64.4 \"green item\" false 448.97 violet 1150 37 81 \"green item\" true 193.82 blue 1153 29 64.5 \"amber item\" false 477.24 red 1156 4 85.3 \"amber item\" false 380.36 red 1159 15 83.5 \"amber item\" false 244.01 amber 1162 28 19.6 \"amber item\" false 688.2 amber 1165 35 82 \"amber item\" false 628.74 blue 1168 9 76.7 \"blue item\" false 501.35 red 1171 8 54.7 \"green item\" true 568 green 1174 20 58.9 \"violet item\" false 336.14 amber 1177 8 5.2 \"violet item\" true 59.64 green]",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 0,
+       "y": 82.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 723.05,
+      "tag": "blue"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 43,
+       "y": 82.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 403.57,
+      "tag": "green"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 3,
+       "y": 15.2
+      },
+      "note": "green item",
+      "on": true,
+      "price": 78.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 34,
+       "y": 24.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 235.35,
+      "tag": "violet"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 19,
+       "y": 60.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 665.44,
+      "tag": "green"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 10,
+       "y": 62.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 679.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 7,
+       "y": 63.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 339.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 12,
+       "y": 89.4
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 738.24,
+      "tag": "red"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 42,
+       "y": 80.9
+      },
+      "note": "green item",
+      "on": true,
+      "price": 124.29,
+      "tag": "violet"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 1,
+       "y": 78.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 230.72,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 6,
+       "y": 31.5
+      },
+      "note": "red item",
+      "on": false,
+      "price": 505.04,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 25,
+       "y": 46.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 434.96,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 4,
+       "y": 10.1
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 468.7,
+      "tag": "blue"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 23,
+       "y": 31.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 63.03,
+      "tag": "green"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 46,
+       "y": 8.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 171.46,
+      "tag": "violet"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 7,
+       "y": 36.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 967.82,
+      "tag": "amber"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 2,
+       "y": 85.8
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 541.4,
+      "tag": "red"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 18,
+       "y": 16.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 837.28,
+      "tag": "red"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 31,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 510.8,
+      "tag": "blue"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 43,
+       "y": 56.1
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 151.79,
+      "tag": "amber"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 48,
+       "y": 88.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 377.13,
+      "tag": "blue"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 34,
+       "y": 45.8
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 732.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 37,
+       "y": 79.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 918.14,
+      "tag": "green"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 5,
+       "y": 61.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 887.23,
+      "tag": "violet"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 23,
+       "y": 46.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 572.51,
+      "tag": "amber"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 17,
+       "y": 3.1
+      },
+      "note": "green item",
+      "on": false,
+      "price": 35.89,
+      "tag": "green"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 43,
+       "y": 70.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 584.42,
+      "tag": "red"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 16,
+       "y": 69.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 451.12,
+      "tag": "red"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 3,
+       "y": 41.3
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 885.59,
+      "tag": "red"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 38,
+       "y": 21.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 899.37,
+      "tag": "red"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 20,
+       "y": 81.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 120.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 20,
+       "y": 73.7
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 850.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 27,
+       "y": 37.5
+      },
+      "note": "green item",
+      "on": false,
+      "price": 845.6,
+      "tag": "blue"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 30,
+       "y": 10.6
+      },
+      "note": "green item",
+      "on": false,
+      "price": 576.56,
+      "tag": "green"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 30,
+       "y": 40.9
+      },
+      "note": "red item",
+      "on": false,
+      "price": 308.38,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 1,
+       "y": 40.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 659.77,
+      "tag": "amber"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 44,
+       "y": 78.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 202.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 5,
+       "y": 29.8
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 302.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 0,
+       "y": 70.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 130.95,
+      "tag": "violet"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 43,
+       "y": 84
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 444.47,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 17,
+       "y": 68.9
+      },
+      "note": "red item",
+      "on": true,
+      "price": 79.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 38,
+       "y": 41.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 742.48,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 19,
+       "y": 5.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 215.9,
+      "tag": "amber"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 42,
+       "y": 14.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 143.9,
+      "tag": "violet"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 17,
+       "y": 64.6
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 396.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 10,
+       "y": 14
+      },
+      "note": "red item",
+      "on": true,
+      "price": 799.94,
+      "tag": "amber"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 1,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 796.6,
+      "tag": "green"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 1,
+       "y": 6.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 587.41,
+      "tag": "blue"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 9,
+       "y": 16
+      },
+      "note": "green item",
+      "on": false,
+      "price": 738.48,
+      "tag": "blue"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 22,
+       "y": 64.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 448.97,
+      "tag": "violet"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 37,
+       "y": 81
+      },
+      "note": "green item",
+      "on": true,
+      "price": 193.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 29,
+       "y": 64.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 477.24,
+      "tag": "red"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 4,
+       "y": 85.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 380.36,
+      "tag": "red"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 15,
+       "y": 83.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 244.01,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 28,
+       "y": 19.6
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 688.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 35,
+       "y": 82
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 628.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 9,
+       "y": 76.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 501.35,
+      "tag": "red"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 8,
+       "y": 54.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 568,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 20,
+       "y": 58.9
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 336.14,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 8,
+       "y": 5.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 59.64,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "random-sparse",
+   "jaro": "rows:[|id loc{x y} note on price tag| 1000 14 37.9 \"blue item\" false 889.23 red 1003 1 1.9 \"amber item\" true 993.45 red 1006 48 35.8 \"green item\" false 248.01 red 1009 1 2.1 \"blue item\" true 591.79 green 1012 30 33.9 \"violet item\" true 761.16 amber 1015 34 65.8 \"green item\" true 962.27 green 1018 49 26.6 ^ true 701.29 blue 1021 44 58 ^ true 862.44 blue 1024 6 35.4 \"amber item\" true 547.37 blue 1027 30 30 \"red item\" true 298.31 green 1030 9 37 ^ true 793.13 amber 1033 40 30.9 \"blue item\" true 21.32 amber 1036 34 29.3 ^ false 421.16 red 1039 4 75.6 \"violet item\" false 46.46 blue 1042 0 77.2 \"red item\" true 738.8 red 1045 9 6.5 ^ false 889.49 violet 1048 38 79.5 \"blue item\" false 599.35 amber 1051 29 85.7 ^ false 113.74 green 1054 7 0.2 ^ false 448.98 amber 1057 37 68.7 \"blue item\" false 277.28 violet 1060 33 83.4 \"amber item\" true 810.63 violet 1063 26 49.7 \"amber item\" false 666.58 amber 1066 35 59.3 ^ false 789.29 blue 1069 41 17.3 \"green item\" true 621.14 green 1072 12 9.4 \"red item\" true 441.54 violet 1075 45 28.7 \"green item\" false 975.76 blue 1078 17 28 \"green item\" true 336.84 green 1081 8 58.5 ^ true 819.13 violet 1084 16 10.5 \"violet item\" true 864.2 amber 1087 34 56.9 ^ true 851.6 amber 1090 24 7 \"red item\" true 46.16 blue 1093 29 58 \"amber item\" false 586.87 violet 1096 11 65.3 \"amber item\" false 804.37 green 1099 27 49.6 \"red item\" false 561.16 blue 1102 40 76.4 \"green item\" false 139.16 red 1105 41 65.5 ^ false 826.68 green 1108 28 4.7 \"green item\" true 17.56 red 1111 6 26.5 \"green item\" true 129.15 red 1114 47 8.5 \"amber item\" true 903.45 blue 1117 44 41.3 \"green item\" false 682.77 violet 1120 28 73.9 \"blue item\" false 483.08 violet 1123 9 29.4 \"red item\" false 693.88 amber 1126 32 31.4 \"violet item\" false 110.63 green 1129 32 22.6 ^ true 155.4 red 1132 0 35.3 \"blue item\" true 187.57 amber 1135 36 83.6 ^ true 395.97 red 1138 48 29.9 ^ true 21.01 violet 1141 13 14.2 \"blue item\" true 367.5 amber 1144 13 20.7 \"amber item\" false 813.21 violet 1147 13 32.9 ^ false 498.05 red 1150 5 41.6 ^ true 851.87 amber 1153 5 2.4 \"green item\" true 438.37 blue 1156 17 27.8 ^ true 346.9 green 1159 5 11.6 \"blue item\" false 110.15 amber 1162 25 35.2 \"amber item\" false 138.3 violet 1165 46 56.6 ^ true 650.1 violet 1168 42 64.5 ^ false 462.04 blue 1171 15 84.5 ^ false 643.82 green 1174 49 39.9 ^ false 385.22 amber 1177 41 87.2 \"green item\" false 86.56 green]",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 14,
+       "y": 37.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 889.23,
+      "tag": "red"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 1,
+       "y": 1.9
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 993.45,
+      "tag": "red"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 48,
+       "y": 35.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 248.01,
+      "tag": "red"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 1,
+       "y": 2.1
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 591.79,
+      "tag": "green"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 30,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 761.16,
+      "tag": "amber"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 34,
+       "y": 65.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 962.27,
+      "tag": "green"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 49,
+       "y": 26.6
+      },
+      "on": true,
+      "price": 701.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 44,
+       "y": 58
+      },
+      "on": true,
+      "price": 862.44,
+      "tag": "blue"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 6,
+       "y": 35.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 547.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 30,
+       "y": 30
+      },
+      "note": "red item",
+      "on": true,
+      "price": 298.31,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 9,
+       "y": 37
+      },
+      "on": true,
+      "price": 793.13,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 40,
+       "y": 30.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 21.32,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 34,
+       "y": 29.3
+      },
+      "on": false,
+      "price": 421.16,
+      "tag": "red"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 4,
+       "y": 75.6
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 46.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 0,
+       "y": 77.2
+      },
+      "note": "red item",
+      "on": true,
+      "price": 738.8,
+      "tag": "red"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 9,
+       "y": 6.5
+      },
+      "on": false,
+      "price": 889.49,
+      "tag": "violet"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 38,
+       "y": 79.5
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 599.35,
+      "tag": "amber"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 29,
+       "y": 85.7
+      },
+      "on": false,
+      "price": 113.74,
+      "tag": "green"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 7,
+       "y": 0.2
+      },
+      "on": false,
+      "price": 448.98,
+      "tag": "amber"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 37,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 277.28,
+      "tag": "violet"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 33,
+       "y": 83.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 810.63,
+      "tag": "violet"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 26,
+       "y": 49.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 666.58,
+      "tag": "amber"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 35,
+       "y": 59.3
+      },
+      "on": false,
+      "price": 789.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 41,
+       "y": 17.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 621.14,
+      "tag": "green"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 12,
+       "y": 9.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 441.54,
+      "tag": "violet"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 45,
+       "y": 28.7
+      },
+      "note": "green item",
+      "on": false,
+      "price": 975.76,
+      "tag": "blue"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 17,
+       "y": 28
+      },
+      "note": "green item",
+      "on": true,
+      "price": 336.84,
+      "tag": "green"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 8,
+       "y": 58.5
+      },
+      "on": true,
+      "price": 819.13,
+      "tag": "violet"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 16,
+       "y": 10.5
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 864.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 34,
+       "y": 56.9
+      },
+      "on": true,
+      "price": 851.6,
+      "tag": "amber"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 24,
+       "y": 7
+      },
+      "note": "red item",
+      "on": true,
+      "price": 46.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 29,
+       "y": 58
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 586.87,
+      "tag": "violet"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 11,
+       "y": 65.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 804.37,
+      "tag": "green"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 27,
+       "y": 49.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 561.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 40,
+       "y": 76.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 139.16,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 41,
+       "y": 65.5
+      },
+      "on": false,
+      "price": 826.68,
+      "tag": "green"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 28,
+       "y": 4.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 17.56,
+      "tag": "red"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 6,
+       "y": 26.5
+      },
+      "note": "green item",
+      "on": true,
+      "price": 129.15,
+      "tag": "red"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 47,
+       "y": 8.5
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 903.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 44,
+       "y": 41.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 682.77,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 28,
+       "y": 73.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 483.08,
+      "tag": "violet"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 9,
+       "y": 29.4
+      },
+      "note": "red item",
+      "on": false,
+      "price": 693.88,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 32,
+       "y": 31.4
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 110.63,
+      "tag": "green"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 32,
+       "y": 22.6
+      },
+      "on": true,
+      "price": 155.4,
+      "tag": "red"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 0,
+       "y": 35.3
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 187.57,
+      "tag": "amber"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 36,
+       "y": 83.6
+      },
+      "on": true,
+      "price": 395.97,
+      "tag": "red"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 48,
+       "y": 29.9
+      },
+      "on": true,
+      "price": 21.01,
+      "tag": "violet"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 13,
+       "y": 14.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 367.5,
+      "tag": "amber"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 13,
+       "y": 20.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 813.21,
+      "tag": "violet"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 13,
+       "y": 32.9
+      },
+      "on": false,
+      "price": 498.05,
+      "tag": "red"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 5,
+       "y": 41.6
+      },
+      "on": true,
+      "price": 851.87,
+      "tag": "amber"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 5,
+       "y": 2.4
+      },
+      "note": "green item",
+      "on": true,
+      "price": 438.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 17,
+       "y": 27.8
+      },
+      "on": true,
+      "price": 346.9,
+      "tag": "green"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 5,
+       "y": 11.6
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 110.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 25,
+       "y": 35.2
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 138.3,
+      "tag": "violet"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 46,
+       "y": 56.6
+      },
+      "on": true,
+      "price": 650.1,
+      "tag": "violet"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 42,
+       "y": 64.5
+      },
+      "on": false,
+      "price": 462.04,
+      "tag": "blue"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 15,
+       "y": 84.5
+      },
+      "on": false,
+      "price": 643.82,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 49,
+       "y": 39.9
+      },
+      "on": false,
+      "price": 385.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 41,
+       "y": 87.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 86.56,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "scalars",
+   "jaro": "a:1 b:2.5 c:true d:false e:~ f:hi g:-9007199254740991",
+   "json": {
+    "a": 1,
+    "b": 2.5,
+    "c": true,
+    "d": false,
+    "e": null,
+    "f": "hi",
+    "g": -9007199254740991
+   }
+  },
+  {
+   "name": "sparse",
+   "jaro": "rows:[|\"^\" email id name x| ^ a@x.io 1 ann ^ ^ ^ 2 bob ^ ^ c@x.io 3 ^ \"^\" k ^ 4 \"^\" ^]",
+   "json": {
+    "rows": [
+     {
+      "email": "a@x.io",
+      "id": 1,
+      "name": "ann"
+     },
+     {
+      "id": 2,
+      "name": "bob"
+     },
+     {
+      "email": "c@x.io",
+      "id": 3,
+      "x": "^"
+     },
+     {
+      "^": "k",
+      "id": 4,
+      "name": "^"
+     }
+    ]
+   }
+  },
+  {
+   "name": "sparseempty",
+   "jaro": "[|a b| 1 2 ^ ^ 3 ^]",
+   "json": [
+    {
+     "a": 1,
+     "b": 2
+    },
+    {},
+    {
+     "a": 3
+    }
+   ]
+  },
+  {
+   "name": "table",
+   "jaro": "rows:[|id n name tags| 1 ~ ann [a b] 2 1.5 \"bob smith\" [] 300 x ann [a]]",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "n": null,
+      "name": "ann",
+      "tags": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "id": 2,
+      "n": 1.5,
+      "name": "bob smith",
+      "tags": []
+     },
+     {
+      "id": 300,
+      "n": "x",
+      "name": "ann",
+      "tags": [
+       "a"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "toplevel",
+   "jaro": "\"just a string\"",
+   "json": "just a string"
+  },
+  {
+   "name": "topnum",
+   "jaro": "3.25",
+   "json": 3.25
+  },
+  {
+   "name": "anchor-spread",
+   "jaro": "# defaults\nbase:\u0026b {host:h port:80}\na:*b\nc:{*b port:81}\nl:[*b *b]",
+   "json": {
+    "a": {
+     "host": "h",
+     "port": 80
+    },
+    "base": {
+     "host": "h",
+     "port": 80
+    },
+    "c": {
+     "host": "h",
+     "port": 81
+    },
+    "l": [
+     {
+      "host": "h",
+      "port": 80
+     },
+     {
+      "host": "h",
+      "port": 80
+     }
+    ]
+   }
+  },
+  {
+   "name": "comments",
+   "jaro": "a:1 # one\n# whole line\nb:\"#not\" c:[1 #x\n 2]",
+   "json": {
+    "a": 1,
+    "b": "#not",
+    "c": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "name": "braces-optional",
+   "jaro": "a:1 b:2",
+   "json": {
+    "a": 1,
+    "b": 2
+   }
+  },
+  {
+   "name": "braces-explicit",
+   "jaro": "{a:1 b:2}",
+   "json": {
+    "a": 1,
+    "b": 2
+   }
+  },
+  {
+   "name": "scalar-top",
+   "jaro": "~",
+   "json": null
+  },
+  {
+   "name": "bool-top",
+   "jaro": "true",
+   "json": true
+  },
+  {
+   "name": "number-forms",
+   "jaro": "[1 -2 3.5 .5 -.5 1e3 0 -0 007]",
+   "json": [
+    1,
+    -2,
+    3.5,
+    0.5,
+    -0.5,
+    1000,
+    0,
+    0,
+    7
+   ]
+  },
+  {
+   "name": "quoted-escapes",
+   "jaro": "[\"a\\\"b\" \"a\\\\b\" \"a\\nb\" \"a\\tb\" \"a\\rb\" \"é\" \"A\"]",
+   "json": [
+    "a\"b",
+    "a\\b",
+    "a\nb",
+    "a\tb",
+    "a\rb",
+    "é",
+    "A"
+   ]
+  },
+  {
+   "name": "table-hand",
+   "jaro": "[|id name| 1 ann 2 bob]",
+   "json": [
+    {
+     "id": 1,
+     "name": "ann"
+    },
+    {
+     "id": 2,
+     "name": "bob"
+    }
+   ]
+  },
+  {
+   "name": "table-sparse",
+   "jaro": "[|id name| 1 ann 2 ^ ^ cid]",
+   "json": [
+    {
+     "id": 1,
+     "name": "ann"
+    },
+    {
+     "id": 2
+    },
+    {
+     "name": "cid"
+    }
+   ]
+  },
+  {
+   "name": "table-nested-columns",
+   "jaro": "[|id u{n g{a b}}| 1 ann 1 2 2 bob 3 4]",
+   "json": [
+    {
+     "id": 1,
+     "u": {
+      "n": "ann",
+      "g": {
+       "a": 1,
+       "b": 2
+      }
+     }
+    },
+    {
+     "id": 2,
+     "u": {
+      "n": "bob",
+      "g": {
+       "a": 3,
+       "b": 4
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "keyed-table",
+   "jaro": "{|a b| x 1 2 y 3 ^}",
+   "json": {
+    "x": {
+     "a": 1,
+     "b": 2
+    },
+    "y": {
+     "a": 3
+    }
+   }
+  },
+  {
+   "name": "empty-containers",
+   "jaro": "[[] {} [|a| ]]",
+   "json": [
+    [],
+    {},
+    []
+   ]
+  },
+  {
+   "name": "quoted-key",
+   "jaro": "{\"a b\":1 \"\":2 \"1\":3}",
+   "json": {
+    "": 2,
+    "1": 3,
+    "a b": 1
+   }
+  },
+  {
+   "name": "unicode-bare",
+   "jaro": "héllo:✓",
+   "json": {
+    "héllo": "✓"
+   }
+  },
+  {
+   "name": "caret-string",
+   "jaro": "a:\"^\"",
+   "json": {
+    "a": "^"
+   }
+  },
+  {
+   "name": "surrogate-pair",
+   "jaro": "\"\\ud83d\\ude00\"",
+   "json": "\ud83d\ude00"
+  },
+  {
+   "name": "number-grammar",
+   "jaro": "[1_000 0x10 1. +5 1e 1e5 .5e1 Inf NaN -.5 1E+2]",
+   "json": [
+    "1_000",
+    "0x10",
+    1,
+    "+5",
+    "1e",
+    100000,
+    5,
+    "Inf",
+    "NaN",
+    -0.5,
+    100
+   ]
+  },
+  {
+   "name": "spread-overrides-member",
+   "jaro": "base:\u0026b {a:1 b:2} x:{a:9 *b}",
+   "json": {
+    "base": {
+     "a": 1,
+     "b": 2
+    },
+    "x": {
+     "a": 1,
+     "b": 2
+    }
+   }
+  },
+  {
+   "name": "member-overrides-spread",
+   "jaro": "base:\u0026b {a:1 b:2} x:{*b a:9}",
+   "json": {
+    "base": {
+     "a": 1,
+     "b": 2
+    },
+    "x": {
+     "a": 9,
+     "b": 2
+    }
+   }
+  },
+  {
+   "name": "bare-ampersand-quoted",
+   "jaro": "a:\"\u0026x\" b:\"*y\"",
+   "json": {
+    "a": "\u0026x",
+    "b": "*y"
+   }
+  }
+ ],
+ "binary": [
+  {
+   "name": "bigint",
+   "hex": "0f0108034362696703808080808080808020436d617803feffffffffffffffff01436d696e03ffffffffffffffffff01",
+   "json": {
+    "big": 1152921504606846976,
+    "max": 9223372036854775807,
+    "min": -9223372036854775808
+   }
+  },
+  {
+   "name": "bigint-dedup",
+   "hex": "0f0108034362696703808080808080808020436d617803feffffffffffffffff01436d696e03ffffffffffffffffff01",
+   "json": {
+    "big": 1152921504606846976,
+    "max": 9223372036854775807,
+    "min": -9223372036854775808
+   }
+  },
+  {
+   "name": "decimal-mixed",
+   "hex": "0f0107040433333333e384254104d74b5304e858bd4004333333d7daac9f41040060b7a18d075942",
+   "json": [
+    705137.6,
+    7512.906316,
+    132855477.8,
+    430003619549.5
+   ]
+  },
+  {
+   "name": "decimal-mixed-dedup",
+   "hex": "0f0107040433333333e384254104d74b5304e858bd4004333333d7daac9f41040060b7a18d075942",
+   "json": [
+    705137.6,
+    7512.906316,
+    132855477.8,
+    430003619549.5
+   ]
+  },
+  {
+   "name": "emptyobj",
+   "hex": "0f010800",
+   "json": {}
+  },
+  {
+   "name": "emptyobj-dedup",
+   "hex": "0f010800",
+   "json": {}
+  },
+  {
+   "name": "keyed",
+   "hex": "0f010802456f746865720802416181416208014163824876657273696f6e73080345312e302e300803446d61696e44612e6a73416e81446e616d65417845312e312e300802416e820605417845322e302e300803060344622e6a73416e000605415e",
+   "json": {
+    "other": {
+     "a": 1,
+     "b": {
+      "c": 2
+     }
+    },
+    "versions": {
+     "1.0.0": {
+      "main": "a.js",
+      "n": 1,
+      "name": "x"
+     },
+     "1.1.0": {
+      "n": 2,
+      "name": "x"
+     },
+     "2.0.0": {
+      "main": "b.js",
+      "n": null,
+      "name": "^"
+     }
+    }
+   }
+  },
+  {
+   "name": "keyed-dedup",
+   "hex": "0f010802456f746865720802416181416208014163824876657273696f6e73080345312e302e300803446d61696e44612e6a73416e81446e616d65417845312e312e300802416e820605417845322e302e300803060344622e6a73416e000605415e",
+   "json": {
+    "other": {
+     "a": 1,
+     "b": {
+      "c": 2
+     }
+    },
+    "versions": {
+     "1.0.0": {
+      "main": "a.js",
+      "n": 1,
+      "name": "x"
+     },
+     "1.1.0": {
+      "n": 2,
+      "name": "x"
+     },
+     "2.0.0": {
+      "main": "b.js",
+      "n": null,
+      "name": "^"
+     }
+    }
+   }
+  },
+  {
+   "name": "keyquote",
+   "hex": "0f01080340824131834361206281",
+   "json": {
+    "": 2,
+    "1": 3,
+    "a b": 1
+   }
+  },
+  {
+   "name": "keyquote-dedup",
+   "hex": "0f01080340824131834361206281",
+   "json": {
+    "": 2,
+    "1": 3,
+    "a b": 1
+   }
+  },
+  {
+   "name": "mixedarr",
+   "hex": "0f010703080141618108014162824173",
+   "json": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    },
+    "s"
+   ]
+  },
+  {
+   "name": "mixedarr-dedup",
+   "hex": "0f010703080141618108014162824173",
+   "json": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    },
+    "s"
+   ]
+  },
+  {
+   "name": "nested",
+   "hex": "0f010801416f0801417807038107000800",
+   "json": {
+    "o": {
+     "x": [
+      1,
+      [],
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "name": "nested-dedup",
+   "hex": "0f010801416f0801417807038107000800",
+   "json": {
+    "o": {
+     "x": [
+      1,
+      [],
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "name": "nestedcols",
+   "hex": "0f01080144726f77730903426964417444757365720302000204060041784179417a0008034367656f0802436c617404000000000000f83f436c6f6e040000000000000440060187446e616d6543616e6e0802060308020604040000000000000c400605040000000000001240060643626f620803060308000601880606415e",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "t": "x",
+      "user": {
+       "geo": {
+        "lat": 1.5,
+        "lon": 2.5
+       },
+       "id": 7,
+       "name": "ann"
+      }
+     },
+     {
+      "id": 2,
+      "t": "y",
+      "user": {
+       "geo": {
+        "lat": 3.5,
+        "lon": 4.5
+       },
+       "name": "bob"
+      }
+     },
+     {
+      "id": 3,
+      "t": "z",
+      "user": {
+       "geo": {},
+       "id": 8,
+       "name": "^"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "name": "nestedcols-dedup",
+   "hex": "0f01080144726f77730903426964417444757365720302000204060041784179417a0008034367656f0802436c617404000000000000f83f436c6f6e040000000000000440060187446e616d6543616e6e0802060308020604040000000000000c400605040000000000001240060643626f620803060308000601880606415e",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "t": "x",
+      "user": {
+       "geo": {
+        "lat": 1.5,
+        "lon": 2.5
+       },
+       "id": 7,
+       "name": "ann"
+      }
+     },
+     {
+      "id": 2,
+      "t": "y",
+      "user": {
+       "geo": {
+        "lat": 3.5,
+        "lon": 4.5
+       },
+       "name": "bob"
+      }
+     },
+     {
+      "id": 3,
+      "t": "z",
+      "user": {
+       "geo": {},
+       "id": 8,
+       "name": "^"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "name": "nestednull",
+   "hex": "0f01090241614175030200020406000802417881417982000802417883417984",
+   "json": [
+    {
+     "a": 1,
+     "u": {
+      "x": 1,
+      "y": 2
+     }
+    },
+    {
+     "a": 2,
+     "u": null
+    },
+    {
+     "a": 3,
+     "u": {
+      "x": 3,
+      "y": 4
+     }
+    }
+   ]
+  },
+  {
+   "name": "nestednull-dedup",
+   "hex": "0f01090241614175030200020406000802417881417982000802417883417984",
+   "json": [
+    {
+     "a": 1,
+     "u": {
+      "x": 1,
+      "y": 2
+     }
+    },
+    {
+     "a": 2,
+     "u": null
+    },
+    {
+     "a": 3,
+     "u": {
+      "x": 3,
+      "y": 4
+     }
+    }
+   ]
+  },
+  {
+   "name": "quoting",
+   "hex": "0f01080d42627343615c6243636f6c43613a624363746c410143646f74422e3545656d70747940436e6567422d31426e6c43610a62446e756c6c417e436e756d4331323341714773617920227822427370436120624174447472756543756e694a68c3a96c6c6f20e29c93",
+   "json": {
+    "bs": "a\\b",
+    "col": "a:b",
+    "ctl": "\u0001",
+    "dot": ".5",
+    "empty": "",
+    "neg": "-1",
+    "nl": "a\nb",
+    "null": "~",
+    "num": "123",
+    "q": "say \"x\"",
+    "sp": "a b",
+    "t": "true",
+    "uni": "héllo ✓"
+   }
+  },
+  {
+   "name": "quoting-dedup",
+   "hex": "0f01080d42627343615c6243636f6c43613a624363746c410143646f74422e3545656d70747940436e6567422d31426e6c43610a62446e756c6c417e436e756d4331323341714773617920227822427370436120624174447472756543756e694a68c3a96c6c6f20e29c93",
+   "json": {
+    "bs": "a\\b",
+    "col": "a:b",
+    "ctl": "\u0001",
+    "dot": ".5",
+    "empty": "",
+    "neg": "-1",
+    "nl": "a\nb",
+    "null": "~",
+    "num": "123",
+    "q": "say \"x\"",
+    "sp": "a b",
+    "t": "true",
+    "uni": "héllo ✓"
+   }
+  },
+  {
+   "name": "random-dense",
+   "hex": "0f01080144726f77730906426964436c6f63446e6f7465426f6e457072696365437461673c01d00f060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060605024178417902000056064426140e1854020c32082e5c0e04243e5660444a0a2e225620064c2828363c3c02580a0056224c265422140202122c4a3a081e3846121028100201ee0cfa0cb002e803be09ea09f609fc0dd20ca40cf604a407ca01f204a601d605b40dc402a605e208e60d9407be0cd6099c073e880bea0aba06b003e40cc20bee05d401b206a206a60cd404fc0a900de20ab6066aa2028c0a9802de0a7cc002880ad40c8a0aaa0d860d8803e80cfe0bc6089a0968030548726564206974656d49626c7565206974656d4a677265656e206974656d4b76696f6c6574206974656d4a616d626572206974656d00010200030401010201000103030402030103040203010401020203030002010202000103010204000100010300010302020204040404040102030304df1b57d110bd040a0202e2e908caf6048e7adeef02e08f089ca608ec9204c081099ac201c0e802909506d0a705acdc05be62f48b029ce80bf8cd06a09c0a909e0696ed01a2cd04baf808cc9a0ba6ea0ac6fe068a38949107f0c005dee70aa2fd0acabc019ab10aa0a90af08407ece103f28608acbc029cd803cecc01beb605927c908809acd102ece001baeb04f4e109d8dc09ea9507f08109c2bd05ecae02d8e905a8d204a2fd02a8b308b4d607ae8f06c0f7069c8d04985d030544626c756545677265656e45616d6265724676696f6c657443726564000102030100000403010202000103020404000200030103020104040404020200010402000203030002020303020100000300040402020004010201",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 0,
+       "y": 82.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 723.05,
+      "tag": "blue"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 43,
+       "y": 82.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 403.57,
+      "tag": "green"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 3,
+       "y": 15.2
+      },
+      "note": "green item",
+      "on": true,
+      "price": 78.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 34,
+       "y": 24.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 235.35,
+      "tag": "violet"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 19,
+       "y": 60.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 665.44,
+      "tag": "green"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 10,
+       "y": 62.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 679.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 7,
+       "y": 63.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 339.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 12,
+       "y": 89.4
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 738.24,
+      "tag": "red"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 42,
+       "y": 80.9
+      },
+      "note": "green item",
+      "on": true,
+      "price": 124.29,
+      "tag": "violet"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 1,
+       "y": 78.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 230.72,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 6,
+       "y": 31.5
+      },
+      "note": "red item",
+      "on": false,
+      "price": 505.04,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 25,
+       "y": 46.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 434.96,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 4,
+       "y": 10.1
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 468.7,
+      "tag": "blue"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 23,
+       "y": 31.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 63.03,
+      "tag": "green"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 46,
+       "y": 8.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 171.46,
+      "tag": "violet"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 7,
+       "y": 36.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 967.82,
+      "tag": "amber"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 2,
+       "y": 85.8
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 541.4,
+      "tag": "red"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 18,
+       "y": 16.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 837.28,
+      "tag": "red"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 31,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 510.8,
+      "tag": "blue"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 43,
+       "y": 56.1
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 151.79,
+      "tag": "amber"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 48,
+       "y": 88.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 377.13,
+      "tag": "blue"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 34,
+       "y": 45.8
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 732.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 37,
+       "y": 79.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 918.14,
+      "tag": "green"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 5,
+       "y": 61.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 887.23,
+      "tag": "violet"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 23,
+       "y": 46.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 572.51,
+      "tag": "amber"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 17,
+       "y": 3.1
+      },
+      "note": "green item",
+      "on": false,
+      "price": 35.89,
+      "tag": "green"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 43,
+       "y": 70.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 584.42,
+      "tag": "red"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 16,
+       "y": 69.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 451.12,
+      "tag": "red"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 3,
+       "y": 41.3
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 885.59,
+      "tag": "red"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 38,
+       "y": 21.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 899.37,
+      "tag": "red"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 20,
+       "y": 81.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 120.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 20,
+       "y": 73.7
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 850.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 27,
+       "y": 37.5
+      },
+      "note": "green item",
+      "on": false,
+      "price": 845.6,
+      "tag": "blue"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 30,
+       "y": 10.6
+      },
+      "note": "green item",
+      "on": false,
+      "price": 576.56,
+      "tag": "green"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 30,
+       "y": 40.9
+      },
+      "note": "red item",
+      "on": false,
+      "price": 308.38,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 1,
+       "y": 40.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 659.77,
+      "tag": "amber"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 44,
+       "y": 78.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 202.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 5,
+       "y": 29.8
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 302.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 0,
+       "y": 70.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 130.95,
+      "tag": "violet"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 43,
+       "y": 84
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 444.47,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 17,
+       "y": 68.9
+      },
+      "note": "red item",
+      "on": true,
+      "price": 79.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 38,
+       "y": 41.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 742.48,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 19,
+       "y": 5.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 215.9,
+      "tag": "amber"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 42,
+       "y": 14.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 143.9,
+      "tag": "violet"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 17,
+       "y": 64.6
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 396.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 10,
+       "y": 14
+      },
+      "note": "red item",
+      "on": true,
+      "price": 799.94,
+      "tag": "amber"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 1,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 796.6,
+      "tag": "green"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 1,
+       "y": 6.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 587.41,
+      "tag": "blue"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 9,
+       "y": 16
+      },
+      "note": "green item",
+      "on": false,
+      "price": 738.48,
+      "tag": "blue"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 22,
+       "y": 64.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 448.97,
+      "tag": "violet"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 37,
+       "y": 81
+      },
+      "note": "green item",
+      "on": true,
+      "price": 193.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 29,
+       "y": 64.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 477.24,
+      "tag": "red"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 4,
+       "y": 85.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 380.36,
+      "tag": "red"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 15,
+       "y": 83.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 244.01,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 28,
+       "y": 19.6
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 688.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 35,
+       "y": 82
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 628.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 9,
+       "y": 76.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 501.35,
+      "tag": "red"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 8,
+       "y": 54.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 568,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 20,
+       "y": 58.9
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 336.14,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 8,
+       "y": 5.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 59.64,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "random-dense-dedup",
+   "hex": "0f01080144726f77730906426964436c6f63446e6f7465426f6e457072696365437461673c01d00f060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060605024178417902000056064426140e1854020c32082e5c0e04243e5660444a0a2e225620064c2828363c3c02580a0056224c265422140202122c4a3a081e3846121028100201ee0cfa0cb002e803be09ea09f609fc0dd20ca40cf604a407ca01f204a601d605b40dc402a605e208e60d9407be0cd6099c073e880bea0aba06b003e40cc20bee05d401b206a206a60cd404fc0a900de20ab6066aa2028c0a9802de0a7cc002880ad40c8a0aaa0d860d8803e80cfe0bc6089a0968030548726564206974656d49626c7565206974656d4a677265656e206974656d4b76696f6c6574206974656d4a616d626572206974656d00010200030401010201000103030402030103040203010401020203030002010202000103010204000100010300010302020204040404040102030304df1b57d110bd040a0202e2e908caf6048e7adeef02e08f089ca608ec9204c081099ac201c0e802909506d0a705acdc05be62f48b029ce80bf8cd06a09c0a909e0696ed01a2cd04baf808cc9a0ba6ea0ac6fe068a38949107f0c005dee70aa2fd0acabc019ab10aa0a90af08407ece103f28608acbc029cd803cecc01beb605927c908809acd102ece001baeb04f4e109d8dc09ea9507f08109c2bd05ecae02d8e905a8d204a2fd02a8b308b4d607ae8f06c0f7069c8d04985d030544626c756545677265656e45616d6265724676696f6c657443726564000102030100000403010202000103020404000200030103020104040404020200010402000203030002020303020100000300040402020004010201",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 0,
+       "y": 82.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 723.05,
+      "tag": "blue"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 43,
+       "y": 82.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 403.57,
+      "tag": "green"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 3,
+       "y": 15.2
+      },
+      "note": "green item",
+      "on": true,
+      "price": 78.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 34,
+       "y": 24.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 235.35,
+      "tag": "violet"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 19,
+       "y": 60.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 665.44,
+      "tag": "green"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 10,
+       "y": 62.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 679.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 7,
+       "y": 63.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 339.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 12,
+       "y": 89.4
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 738.24,
+      "tag": "red"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 42,
+       "y": 80.9
+      },
+      "note": "green item",
+      "on": true,
+      "price": 124.29,
+      "tag": "violet"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 1,
+       "y": 78.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 230.72,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 6,
+       "y": 31.5
+      },
+      "note": "red item",
+      "on": false,
+      "price": 505.04,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 25,
+       "y": 46.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 434.96,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 4,
+       "y": 10.1
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 468.7,
+      "tag": "blue"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 23,
+       "y": 31.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 63.03,
+      "tag": "green"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 46,
+       "y": 8.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 171.46,
+      "tag": "violet"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 7,
+       "y": 36.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 967.82,
+      "tag": "amber"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 2,
+       "y": 85.8
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 541.4,
+      "tag": "red"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 18,
+       "y": 16.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 837.28,
+      "tag": "red"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 31,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 510.8,
+      "tag": "blue"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 43,
+       "y": 56.1
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 151.79,
+      "tag": "amber"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 48,
+       "y": 88.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 377.13,
+      "tag": "blue"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 34,
+       "y": 45.8
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 732.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 37,
+       "y": 79.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 918.14,
+      "tag": "green"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 5,
+       "y": 61.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 887.23,
+      "tag": "violet"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 23,
+       "y": 46.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 572.51,
+      "tag": "amber"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 17,
+       "y": 3.1
+      },
+      "note": "green item",
+      "on": false,
+      "price": 35.89,
+      "tag": "green"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 43,
+       "y": 70.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 584.42,
+      "tag": "red"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 16,
+       "y": 69.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 451.12,
+      "tag": "red"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 3,
+       "y": 41.3
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 885.59,
+      "tag": "red"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 38,
+       "y": 21.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 899.37,
+      "tag": "red"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 20,
+       "y": 81.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 120.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 20,
+       "y": 73.7
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 850.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 27,
+       "y": 37.5
+      },
+      "note": "green item",
+      "on": false,
+      "price": 845.6,
+      "tag": "blue"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 30,
+       "y": 10.6
+      },
+      "note": "green item",
+      "on": false,
+      "price": 576.56,
+      "tag": "green"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 30,
+       "y": 40.9
+      },
+      "note": "red item",
+      "on": false,
+      "price": 308.38,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 1,
+       "y": 40.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 659.77,
+      "tag": "amber"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 44,
+       "y": 78.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 202.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 5,
+       "y": 29.8
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 302.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 0,
+       "y": 70.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 130.95,
+      "tag": "violet"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 43,
+       "y": 84
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 444.47,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 17,
+       "y": 68.9
+      },
+      "note": "red item",
+      "on": true,
+      "price": 79.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 38,
+       "y": 41.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 742.48,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 19,
+       "y": 5.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 215.9,
+      "tag": "amber"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 42,
+       "y": 14.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 143.9,
+      "tag": "violet"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 17,
+       "y": 64.6
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 396.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 10,
+       "y": 14
+      },
+      "note": "red item",
+      "on": true,
+      "price": 799.94,
+      "tag": "amber"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 1,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 796.6,
+      "tag": "green"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 1,
+       "y": 6.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 587.41,
+      "tag": "blue"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 9,
+       "y": 16
+      },
+      "note": "green item",
+      "on": false,
+      "price": 738.48,
+      "tag": "blue"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 22,
+       "y": 64.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 448.97,
+      "tag": "violet"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 37,
+       "y": 81
+      },
+      "note": "green item",
+      "on": true,
+      "price": 193.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 29,
+       "y": 64.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 477.24,
+      "tag": "red"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 4,
+       "y": 85.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 380.36,
+      "tag": "red"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 15,
+       "y": 83.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 244.01,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 28,
+       "y": 19.6
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 688.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 35,
+       "y": 82
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 628.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 9,
+       "y": 76.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 501.35,
+      "tag": "red"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 8,
+       "y": 54.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 568,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 20,
+       "y": 58.9
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 336.14,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 8,
+       "y": 5.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 59.64,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "random-sparse",
+   "hex": "0f01080144726f77730d06426964436c6f63446e6f7465426f6e457072696365437461673c0001d00f06060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060005024178417902001c0260023c4462580c3c1250440800124c3a0e4a42344652185a22102044303a16365052380c5e58381240400048601a1a1a0a0a220a325c541e62520201f60526cc052aa605a40a94048809c405d804e405ea04ca04e80b880c8201b60cb20d04de0a840de207a209da02bc01be04b0049209d201f2088c0188099a0ae007f80b9e0a5e9204aa01ba06c60bcc04f404c403c205880dd6049c029e039205c00630ac04e801c005ec088a0a9a0d9e06d00d013f6bb9d7f7976908030549626c7565206974656d4a616d626572206974656d4a677265656e206974656d4b76696f6c6574206974656d48726564206974656d0001020003020104000304000001010204020203040101040202020102000403000001020001020004fa4f907d70f89c00000202b6ed0aa2900cc28303d69c07a8a509c6df0be2c708c8c30aa2d7068ed203a2d709a821889205cc48b08209eaed0abea807dcb101c4bd05a0b103cef209c49108a2d109c4ca07f4b105d0f40ba88e04f2ff09a8c60ad0b20a9048fe9407eae809e8ec06b8d901d88b0ab81be6c901d2830beaaa08e8f20598bc08eeac01e8f2018aa502daea04ea209cbe04d2f6099a8a0686b30afaac05849e048eac018cd801e4f707f8d105fced07f4d904a087010003054372656445677265656e45616d62657244626c75654676696f6c6574000000010201030303010202000300040201020404020301040301040202030401030001000003040402010002000402040002030102040403010201",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 14,
+       "y": 37.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 889.23,
+      "tag": "red"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 1,
+       "y": 1.9
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 993.45,
+      "tag": "red"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 48,
+       "y": 35.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 248.01,
+      "tag": "red"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 1,
+       "y": 2.1
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 591.79,
+      "tag": "green"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 30,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 761.16,
+      "tag": "amber"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 34,
+       "y": 65.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 962.27,
+      "tag": "green"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 49,
+       "y": 26.6
+      },
+      "on": true,
+      "price": 701.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 44,
+       "y": 58
+      },
+      "on": true,
+      "price": 862.44,
+      "tag": "blue"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 6,
+       "y": 35.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 547.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 30,
+       "y": 30
+      },
+      "note": "red item",
+      "on": true,
+      "price": 298.31,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 9,
+       "y": 37
+      },
+      "on": true,
+      "price": 793.13,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 40,
+       "y": 30.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 21.32,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 34,
+       "y": 29.3
+      },
+      "on": false,
+      "price": 421.16,
+      "tag": "red"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 4,
+       "y": 75.6
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 46.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 0,
+       "y": 77.2
+      },
+      "note": "red item",
+      "on": true,
+      "price": 738.8,
+      "tag": "red"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 9,
+       "y": 6.5
+      },
+      "on": false,
+      "price": 889.49,
+      "tag": "violet"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 38,
+       "y": 79.5
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 599.35,
+      "tag": "amber"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 29,
+       "y": 85.7
+      },
+      "on": false,
+      "price": 113.74,
+      "tag": "green"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 7,
+       "y": 0.2
+      },
+      "on": false,
+      "price": 448.98,
+      "tag": "amber"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 37,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 277.28,
+      "tag": "violet"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 33,
+       "y": 83.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 810.63,
+      "tag": "violet"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 26,
+       "y": 49.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 666.58,
+      "tag": "amber"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 35,
+       "y": 59.3
+      },
+      "on": false,
+      "price": 789.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 41,
+       "y": 17.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 621.14,
+      "tag": "green"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 12,
+       "y": 9.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 441.54,
+      "tag": "violet"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 45,
+       "y": 28.7
+      },
+      "note": "green item",
+      "on": false,
+      "price": 975.76,
+      "tag": "blue"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 17,
+       "y": 28
+      },
+      "note": "green item",
+      "on": true,
+      "price": 336.84,
+      "tag": "green"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 8,
+       "y": 58.5
+      },
+      "on": true,
+      "price": 819.13,
+      "tag": "violet"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 16,
+       "y": 10.5
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 864.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 34,
+       "y": 56.9
+      },
+      "on": true,
+      "price": 851.6,
+      "tag": "amber"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 24,
+       "y": 7
+      },
+      "note": "red item",
+      "on": true,
+      "price": 46.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 29,
+       "y": 58
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 586.87,
+      "tag": "violet"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 11,
+       "y": 65.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 804.37,
+      "tag": "green"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 27,
+       "y": 49.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 561.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 40,
+       "y": 76.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 139.16,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 41,
+       "y": 65.5
+      },
+      "on": false,
+      "price": 826.68,
+      "tag": "green"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 28,
+       "y": 4.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 17.56,
+      "tag": "red"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 6,
+       "y": 26.5
+      },
+      "note": "green item",
+      "on": true,
+      "price": 129.15,
+      "tag": "red"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 47,
+       "y": 8.5
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 903.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 44,
+       "y": 41.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 682.77,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 28,
+       "y": 73.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 483.08,
+      "tag": "violet"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 9,
+       "y": 29.4
+      },
+      "note": "red item",
+      "on": false,
+      "price": 693.88,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 32,
+       "y": 31.4
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 110.63,
+      "tag": "green"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 32,
+       "y": 22.6
+      },
+      "on": true,
+      "price": 155.4,
+      "tag": "red"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 0,
+       "y": 35.3
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 187.57,
+      "tag": "amber"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 36,
+       "y": 83.6
+      },
+      "on": true,
+      "price": 395.97,
+      "tag": "red"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 48,
+       "y": 29.9
+      },
+      "on": true,
+      "price": 21.01,
+      "tag": "violet"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 13,
+       "y": 14.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 367.5,
+      "tag": "amber"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 13,
+       "y": 20.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 813.21,
+      "tag": "violet"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 13,
+       "y": 32.9
+      },
+      "on": false,
+      "price": 498.05,
+      "tag": "red"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 5,
+       "y": 41.6
+      },
+      "on": true,
+      "price": 851.87,
+      "tag": "amber"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 5,
+       "y": 2.4
+      },
+      "note": "green item",
+      "on": true,
+      "price": 438.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 17,
+       "y": 27.8
+      },
+      "on": true,
+      "price": 346.9,
+      "tag": "green"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 5,
+       "y": 11.6
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 110.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 25,
+       "y": 35.2
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 138.3,
+      "tag": "violet"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 46,
+       "y": 56.6
+      },
+      "on": true,
+      "price": 650.1,
+      "tag": "violet"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 42,
+       "y": 64.5
+      },
+      "on": false,
+      "price": 462.04,
+      "tag": "blue"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 15,
+       "y": 84.5
+      },
+      "on": false,
+      "price": 643.82,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 49,
+       "y": 39.9
+      },
+      "on": false,
+      "price": 385.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 41,
+       "y": 87.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 86.56,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "random-sparse-dedup",
+   "hex": "0f01080144726f77730d06426964436c6f63446e6f7465426f6e457072696365437461673c0001d00f06060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060005024178417902001c0260023c4462580c3c1250440800124c3a0e4a42344652185a22102044303a16365052380c5e58381240400048601a1a1a0a0a220a325c541e62520201f60526cc052aa605a40a94048809c405d804e405ea04ca04e80b880c8201b60cb20d04de0a840de207a209da02bc01be04b0049209d201f2088c0188099a0ae007f80b9e0a5e9204aa01ba06c60bcc04f404c403c205880dd6049c029e039205c00630ac04e801c005ec088a0a9a0d9e06d00d013f6bb9d7f7976908030549626c7565206974656d4a616d626572206974656d4a677265656e206974656d4b76696f6c6574206974656d48726564206974656d0001020003020104000304000001010204020203040101040202020102000403000001020001020004fa4f907d70f89c00000202b6ed0aa2900cc28303d69c07a8a509c6df0be2c708c8c30aa2d7068ed203a2d709a821889205cc48b08209eaed0abea807dcb101c4bd05a0b103cef209c49108a2d109c4ca07f4b105d0f40ba88e04f2ff09a8c60ad0b20a9048fe9407eae809e8ec06b8d901d88b0ab81be6c901d2830beaaa08e8f20598bc08eeac01e8f2018aa502daea04ea209cbe04d2f6099a8a0686b30afaac05849e048eac018cd801e4f707f8d105fced07f4d904a087010003054372656445677265656e45616d62657244626c75654676696f6c6574000000010201030303010202000300040201020404020301040301040202030401030001000003040402010002000402040002030102040403010201",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 14,
+       "y": 37.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 889.23,
+      "tag": "red"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 1,
+       "y": 1.9
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 993.45,
+      "tag": "red"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 48,
+       "y": 35.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 248.01,
+      "tag": "red"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 1,
+       "y": 2.1
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 591.79,
+      "tag": "green"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 30,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 761.16,
+      "tag": "amber"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 34,
+       "y": 65.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 962.27,
+      "tag": "green"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 49,
+       "y": 26.6
+      },
+      "on": true,
+      "price": 701.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 44,
+       "y": 58
+      },
+      "on": true,
+      "price": 862.44,
+      "tag": "blue"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 6,
+       "y": 35.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 547.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 30,
+       "y": 30
+      },
+      "note": "red item",
+      "on": true,
+      "price": 298.31,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 9,
+       "y": 37
+      },
+      "on": true,
+      "price": 793.13,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 40,
+       "y": 30.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 21.32,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 34,
+       "y": 29.3
+      },
+      "on": false,
+      "price": 421.16,
+      "tag": "red"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 4,
+       "y": 75.6
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 46.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 0,
+       "y": 77.2
+      },
+      "note": "red item",
+      "on": true,
+      "price": 738.8,
+      "tag": "red"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 9,
+       "y": 6.5
+      },
+      "on": false,
+      "price": 889.49,
+      "tag": "violet"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 38,
+       "y": 79.5
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 599.35,
+      "tag": "amber"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 29,
+       "y": 85.7
+      },
+      "on": false,
+      "price": 113.74,
+      "tag": "green"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 7,
+       "y": 0.2
+      },
+      "on": false,
+      "price": 448.98,
+      "tag": "amber"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 37,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 277.28,
+      "tag": "violet"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 33,
+       "y": 83.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 810.63,
+      "tag": "violet"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 26,
+       "y": 49.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 666.58,
+      "tag": "amber"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 35,
+       "y": 59.3
+      },
+      "on": false,
+      "price": 789.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 41,
+       "y": 17.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 621.14,
+      "tag": "green"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 12,
+       "y": 9.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 441.54,
+      "tag": "violet"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 45,
+       "y": 28.7
+      },
+      "note": "green item",
+      "on": false,
+      "price": 975.76,
+      "tag": "blue"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 17,
+       "y": 28
+      },
+      "note": "green item",
+      "on": true,
+      "price": 336.84,
+      "tag": "green"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 8,
+       "y": 58.5
+      },
+      "on": true,
+      "price": 819.13,
+      "tag": "violet"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 16,
+       "y": 10.5
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 864.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 34,
+       "y": 56.9
+      },
+      "on": true,
+      "price": 851.6,
+      "tag": "amber"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 24,
+       "y": 7
+      },
+      "note": "red item",
+      "on": true,
+      "price": 46.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 29,
+       "y": 58
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 586.87,
+      "tag": "violet"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 11,
+       "y": 65.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 804.37,
+      "tag": "green"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 27,
+       "y": 49.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 561.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 40,
+       "y": 76.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 139.16,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 41,
+       "y": 65.5
+      },
+      "on": false,
+      "price": 826.68,
+      "tag": "green"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 28,
+       "y": 4.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 17.56,
+      "tag": "red"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 6,
+       "y": 26.5
+      },
+      "note": "green item",
+      "on": true,
+      "price": 129.15,
+      "tag": "red"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 47,
+       "y": 8.5
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 903.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 44,
+       "y": 41.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 682.77,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 28,
+       "y": 73.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 483.08,
+      "tag": "violet"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 9,
+       "y": 29.4
+      },
+      "note": "red item",
+      "on": false,
+      "price": 693.88,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 32,
+       "y": 31.4
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 110.63,
+      "tag": "green"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 32,
+       "y": 22.6
+      },
+      "on": true,
+      "price": 155.4,
+      "tag": "red"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 0,
+       "y": 35.3
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 187.57,
+      "tag": "amber"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 36,
+       "y": 83.6
+      },
+      "on": true,
+      "price": 395.97,
+      "tag": "red"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 48,
+       "y": 29.9
+      },
+      "on": true,
+      "price": 21.01,
+      "tag": "violet"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 13,
+       "y": 14.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 367.5,
+      "tag": "amber"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 13,
+       "y": 20.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 813.21,
+      "tag": "violet"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 13,
+       "y": 32.9
+      },
+      "on": false,
+      "price": 498.05,
+      "tag": "red"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 5,
+       "y": 41.6
+      },
+      "on": true,
+      "price": 851.87,
+      "tag": "amber"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 5,
+       "y": 2.4
+      },
+      "note": "green item",
+      "on": true,
+      "price": 438.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 17,
+       "y": 27.8
+      },
+      "on": true,
+      "price": 346.9,
+      "tag": "green"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 5,
+       "y": 11.6
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 110.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 25,
+       "y": 35.2
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 138.3,
+      "tag": "violet"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 46,
+       "y": 56.6
+      },
+      "on": true,
+      "price": 650.1,
+      "tag": "violet"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 42,
+       "y": 64.5
+      },
+      "on": false,
+      "price": 462.04,
+      "tag": "blue"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 15,
+       "y": 84.5
+      },
+      "on": false,
+      "price": 643.82,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 49,
+       "y": 39.9
+      },
+      "on": false,
+      "price": 385.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 41,
+       "y": 87.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 86.56,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "scalars",
+   "hex": "0f01080741618141620400000000000004404163024164014165004166426869416703fdffffffffffff1f",
+   "json": {
+    "a": 1,
+    "b": 2.5,
+    "c": true,
+    "d": false,
+    "e": null,
+    "f": "hi",
+    "g": -9007199254740991
+   }
+  },
+  {
+   "name": "scalars-dedup",
+   "hex": "0f01080741618141620400000000000004404163024164014165004166426869416703fdffffffffffff1f",
+   "json": {
+    "a": 1,
+    "b": 2.5,
+    "c": true,
+    "d": false,
+    "e": null,
+    "f": "hi",
+    "g": -9007199254740991
+   }
+  },
+  {
+   "name": "sparse",
+   "hex": "0f01080144726f77730704080345656d61696c466140782e696f42696481446e616d6543616e6e0802060382060443626f6208030601466340782e696f0603834178415e0803415e416b0603840604415e",
+   "json": {
+    "rows": [
+     {
+      "email": "a@x.io",
+      "id": 1,
+      "name": "ann"
+     },
+     {
+      "id": 2,
+      "name": "bob"
+     },
+     {
+      "email": "c@x.io",
+      "id": 3,
+      "x": "^"
+     },
+     {
+      "^": "k",
+      "id": 4,
+      "name": "^"
+     }
+    ]
+   }
+  },
+  {
+   "name": "sparse-dedup",
+   "hex": "0f01080144726f77730704080345656d61696c466140782e696f42696481446e616d6543616e6e0802060382060443626f6208030601466340782e696f0603834178415e0803415e416b0603840604415e",
+   "json": {
+    "rows": [
+     {
+      "email": "a@x.io",
+      "id": 1,
+      "name": "ann"
+     },
+     {
+      "id": 2,
+      "name": "bob"
+     },
+     {
+      "email": "c@x.io",
+      "id": 3,
+      "x": "^"
+     },
+     {
+      "^": "k",
+      "id": 4,
+      "name": "^"
+     }
+    ]
+   }
+  },
+  {
+   "name": "sparseempty",
+   "hex": "0f010703080241618141628208000801416183",
+   "json": [
+    {
+     "a": 1,
+     "b": 2
+    },
+    {},
+    {
+     "a": 3
+    }
+   ]
+  },
+  {
+   "name": "sparseempty-dedup",
+   "hex": "0f010703080241618141628208000801416183",
+   "json": [
+    {
+     "a": 1,
+     "b": 2
+    },
+    {},
+    {
+     "a": 3
+    }
+   ]
+  },
+  {
+   "name": "table",
+   "hex": "0f01080144726f77730904426964416e446e616d6544746167730302000204d804000004000000000000f83f41780043616e6e49626f6220736d697468060400070241614162070007014161",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "n": null,
+      "name": "ann",
+      "tags": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "id": 2,
+      "n": 1.5,
+      "name": "bob smith",
+      "tags": []
+     },
+     {
+      "id": 300,
+      "n": "x",
+      "name": "ann",
+      "tags": [
+       "a"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "table-dedup",
+   "hex": "0f01080144726f77730904426964416e446e616d6544746167730302000204d804000004000000000000f83f41780043616e6e49626f6220736d697468060400070241614162070007014161",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "n": null,
+      "name": "ann",
+      "tags": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "id": 2,
+      "n": 1.5,
+      "name": "bob smith",
+      "tags": []
+     },
+     {
+      "id": 300,
+      "n": "x",
+      "name": "ann",
+      "tags": [
+       "a"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "toplevel",
+   "hex": "0f014d6a757374206120737472696e67",
+   "json": "just a string"
+  },
+  {
+   "name": "toplevel-dedup",
+   "hex": "0f014d6a757374206120737472696e67",
+   "json": "just a string"
+  },
+  {
+   "name": "topnum",
+   "hex": "0f01040000000000000a40",
+   "json": 3.25
+  },
+  {
+   "name": "topnum-dedup",
+   "hex": "0f01040000000000000a40",
+   "json": 3.25
+  }
+ ],
+ "trees": [
+  {
+   "name": "bigint",
+   "json": {
+    "big": 1152921504606846976,
+    "max": 9223372036854775807,
+    "min": -9223372036854775808
+   }
+  },
+  {
+   "name": "decimal-mixed",
+   "json": [
+    705137.6,
+    7512.906316,
+    132855477.8,
+    430003619549.5
+   ]
+  },
+  {
+   "name": "emptyobj",
+   "json": {}
+  },
+  {
+   "name": "keyed",
+   "json": {
+    "other": {
+     "a": 1,
+     "b": {
+      "c": 2
+     }
+    },
+    "versions": {
+     "1.0.0": {
+      "main": "a.js",
+      "n": 1,
+      "name": "x"
+     },
+     "1.1.0": {
+      "n": 2,
+      "name": "x"
+     },
+     "2.0.0": {
+      "main": "b.js",
+      "n": null,
+      "name": "^"
+     }
+    }
+   }
+  },
+  {
+   "name": "keyquote",
+   "json": {
+    "": 2,
+    "1": 3,
+    "a b": 1
+   }
+  },
+  {
+   "name": "mixedarr",
+   "json": [
+    {
+     "a": 1
+    },
+    {
+     "b": 2
+    },
+    "s"
+   ]
+  },
+  {
+   "name": "nested",
+   "json": {
+    "o": {
+     "x": [
+      1,
+      [],
+      {}
+     ]
+    }
+   }
+  },
+  {
+   "name": "nestedcols",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "t": "x",
+      "user": {
+       "geo": {
+        "lat": 1.5,
+        "lon": 2.5
+       },
+       "id": 7,
+       "name": "ann"
+      }
+     },
+     {
+      "id": 2,
+      "t": "y",
+      "user": {
+       "geo": {
+        "lat": 3.5,
+        "lon": 4.5
+       },
+       "name": "bob"
+      }
+     },
+     {
+      "id": 3,
+      "t": "z",
+      "user": {
+       "geo": {},
+       "id": 8,
+       "name": "^"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "name": "nestednull",
+   "json": [
+    {
+     "a": 1,
+     "u": {
+      "x": 1,
+      "y": 2
+     }
+    },
+    {
+     "a": 2,
+     "u": null
+    },
+    {
+     "a": 3,
+     "u": {
+      "x": 3,
+      "y": 4
+     }
+    }
+   ]
+  },
+  {
+   "name": "quoting",
+   "json": {
+    "bs": "a\\b",
+    "col": "a:b",
+    "ctl": "\u0001",
+    "dot": ".5",
+    "empty": "",
+    "neg": "-1",
+    "nl": "a\nb",
+    "null": "~",
+    "num": "123",
+    "q": "say \"x\"",
+    "sp": "a b",
+    "t": "true",
+    "uni": "héllo ✓"
+   }
+  },
+  {
+   "name": "random-dense",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 0,
+       "y": 82.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 723.05,
+      "tag": "blue"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 43,
+       "y": 82.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 403.57,
+      "tag": "green"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 3,
+       "y": 15.2
+      },
+      "note": "green item",
+      "on": true,
+      "price": 78.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 34,
+       "y": 24.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 235.35,
+      "tag": "violet"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 19,
+       "y": 60.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 665.44,
+      "tag": "green"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 10,
+       "y": 62.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 679.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 7,
+       "y": 63.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 339.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 12,
+       "y": 89.4
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 738.24,
+      "tag": "red"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 42,
+       "y": 80.9
+      },
+      "note": "green item",
+      "on": true,
+      "price": 124.29,
+      "tag": "violet"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 1,
+       "y": 78.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 230.72,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 6,
+       "y": 31.5
+      },
+      "note": "red item",
+      "on": false,
+      "price": 505.04,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 25,
+       "y": 46.6
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 434.96,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 4,
+       "y": 10.1
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 468.7,
+      "tag": "blue"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 23,
+       "y": 31.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 63.03,
+      "tag": "green"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 46,
+       "y": 8.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 171.46,
+      "tag": "violet"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 7,
+       "y": 36.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 967.82,
+      "tag": "amber"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 2,
+       "y": 85.8
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 541.4,
+      "tag": "red"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 18,
+       "y": 16.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 837.28,
+      "tag": "red"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 31,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 510.8,
+      "tag": "blue"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 43,
+       "y": 56.1
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 151.79,
+      "tag": "amber"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 48,
+       "y": 88.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 377.13,
+      "tag": "blue"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 34,
+       "y": 45.8
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 732.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 37,
+       "y": 79.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 918.14,
+      "tag": "green"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 5,
+       "y": 61.9
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 887.23,
+      "tag": "violet"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 23,
+       "y": 46.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 572.51,
+      "tag": "amber"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 17,
+       "y": 3.1
+      },
+      "note": "green item",
+      "on": false,
+      "price": 35.89,
+      "tag": "green"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 43,
+       "y": 70.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 584.42,
+      "tag": "red"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 16,
+       "y": 69.3
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 451.12,
+      "tag": "red"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 3,
+       "y": 41.3
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 885.59,
+      "tag": "red"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 38,
+       "y": 21.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 899.37,
+      "tag": "red"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 20,
+       "y": 81.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 120.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 20,
+       "y": 73.7
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 850.69,
+      "tag": "amber"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 27,
+       "y": 37.5
+      },
+      "note": "green item",
+      "on": false,
+      "price": 845.6,
+      "tag": "blue"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 30,
+       "y": 10.6
+      },
+      "note": "green item",
+      "on": false,
+      "price": 576.56,
+      "tag": "green"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 30,
+       "y": 40.9
+      },
+      "note": "red item",
+      "on": false,
+      "price": 308.38,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 1,
+       "y": 40.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 659.77,
+      "tag": "amber"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 44,
+       "y": 78.7
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 202.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 5,
+       "y": 29.8
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 302.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 0,
+       "y": 70.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 130.95,
+      "tag": "violet"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 43,
+       "y": 84
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 444.47,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 17,
+       "y": 68.9
+      },
+      "note": "red item",
+      "on": true,
+      "price": 79.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 38,
+       "y": 41.1
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 742.48,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 19,
+       "y": 5.3
+      },
+      "note": "red item",
+      "on": true,
+      "price": 215.9,
+      "tag": "amber"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 42,
+       "y": 14.5
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 143.9,
+      "tag": "violet"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 17,
+       "y": 64.6
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 396.45,
+      "tag": "violet"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 10,
+       "y": 14
+      },
+      "note": "red item",
+      "on": true,
+      "price": 799.94,
+      "tag": "amber"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 1,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 796.6,
+      "tag": "green"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 1,
+       "y": 6.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 587.41,
+      "tag": "blue"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 9,
+       "y": 16
+      },
+      "note": "green item",
+      "on": false,
+      "price": 738.48,
+      "tag": "blue"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 22,
+       "y": 64.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 448.97,
+      "tag": "violet"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 37,
+       "y": 81
+      },
+      "note": "green item",
+      "on": true,
+      "price": 193.82,
+      "tag": "blue"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 29,
+       "y": 64.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 477.24,
+      "tag": "red"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 4,
+       "y": 85.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 380.36,
+      "tag": "red"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 15,
+       "y": 83.5
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 244.01,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 28,
+       "y": 19.6
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 688.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 35,
+       "y": 82
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 628.74,
+      "tag": "blue"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 9,
+       "y": 76.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 501.35,
+      "tag": "red"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 8,
+       "y": 54.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 568,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 20,
+       "y": 58.9
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 336.14,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 8,
+       "y": 5.2
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 59.64,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "random-sparse",
+   "json": {
+    "rows": [
+     {
+      "id": 1000,
+      "loc": {
+       "x": 14,
+       "y": 37.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 889.23,
+      "tag": "red"
+     },
+     {
+      "id": 1003,
+      "loc": {
+       "x": 1,
+       "y": 1.9
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 993.45,
+      "tag": "red"
+     },
+     {
+      "id": 1006,
+      "loc": {
+       "x": 48,
+       "y": 35.8
+      },
+      "note": "green item",
+      "on": false,
+      "price": 248.01,
+      "tag": "red"
+     },
+     {
+      "id": 1009,
+      "loc": {
+       "x": 1,
+       "y": 2.1
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 591.79,
+      "tag": "green"
+     },
+     {
+      "id": 1012,
+      "loc": {
+       "x": 30,
+       "y": 33.9
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 761.16,
+      "tag": "amber"
+     },
+     {
+      "id": 1015,
+      "loc": {
+       "x": 34,
+       "y": 65.8
+      },
+      "note": "green item",
+      "on": true,
+      "price": 962.27,
+      "tag": "green"
+     },
+     {
+      "id": 1018,
+      "loc": {
+       "x": 49,
+       "y": 26.6
+      },
+      "on": true,
+      "price": 701.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1021,
+      "loc": {
+       "x": 44,
+       "y": 58
+      },
+      "on": true,
+      "price": 862.44,
+      "tag": "blue"
+     },
+     {
+      "id": 1024,
+      "loc": {
+       "x": 6,
+       "y": 35.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 547.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1027,
+      "loc": {
+       "x": 30,
+       "y": 30
+      },
+      "note": "red item",
+      "on": true,
+      "price": 298.31,
+      "tag": "green"
+     },
+     {
+      "id": 1030,
+      "loc": {
+       "x": 9,
+       "y": 37
+      },
+      "on": true,
+      "price": 793.13,
+      "tag": "amber"
+     },
+     {
+      "id": 1033,
+      "loc": {
+       "x": 40,
+       "y": 30.9
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 21.32,
+      "tag": "amber"
+     },
+     {
+      "id": 1036,
+      "loc": {
+       "x": 34,
+       "y": 29.3
+      },
+      "on": false,
+      "price": 421.16,
+      "tag": "red"
+     },
+     {
+      "id": 1039,
+      "loc": {
+       "x": 4,
+       "y": 75.6
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 46.46,
+      "tag": "blue"
+     },
+     {
+      "id": 1042,
+      "loc": {
+       "x": 0,
+       "y": 77.2
+      },
+      "note": "red item",
+      "on": true,
+      "price": 738.8,
+      "tag": "red"
+     },
+     {
+      "id": 1045,
+      "loc": {
+       "x": 9,
+       "y": 6.5
+      },
+      "on": false,
+      "price": 889.49,
+      "tag": "violet"
+     },
+     {
+      "id": 1048,
+      "loc": {
+       "x": 38,
+       "y": 79.5
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 599.35,
+      "tag": "amber"
+     },
+     {
+      "id": 1051,
+      "loc": {
+       "x": 29,
+       "y": 85.7
+      },
+      "on": false,
+      "price": 113.74,
+      "tag": "green"
+     },
+     {
+      "id": 1054,
+      "loc": {
+       "x": 7,
+       "y": 0.2
+      },
+      "on": false,
+      "price": 448.98,
+      "tag": "amber"
+     },
+     {
+      "id": 1057,
+      "loc": {
+       "x": 37,
+       "y": 68.7
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 277.28,
+      "tag": "violet"
+     },
+     {
+      "id": 1060,
+      "loc": {
+       "x": 33,
+       "y": 83.4
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 810.63,
+      "tag": "violet"
+     },
+     {
+      "id": 1063,
+      "loc": {
+       "x": 26,
+       "y": 49.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 666.58,
+      "tag": "amber"
+     },
+     {
+      "id": 1066,
+      "loc": {
+       "x": 35,
+       "y": 59.3
+      },
+      "on": false,
+      "price": 789.29,
+      "tag": "blue"
+     },
+     {
+      "id": 1069,
+      "loc": {
+       "x": 41,
+       "y": 17.3
+      },
+      "note": "green item",
+      "on": true,
+      "price": 621.14,
+      "tag": "green"
+     },
+     {
+      "id": 1072,
+      "loc": {
+       "x": 12,
+       "y": 9.4
+      },
+      "note": "red item",
+      "on": true,
+      "price": 441.54,
+      "tag": "violet"
+     },
+     {
+      "id": 1075,
+      "loc": {
+       "x": 45,
+       "y": 28.7
+      },
+      "note": "green item",
+      "on": false,
+      "price": 975.76,
+      "tag": "blue"
+     },
+     {
+      "id": 1078,
+      "loc": {
+       "x": 17,
+       "y": 28
+      },
+      "note": "green item",
+      "on": true,
+      "price": 336.84,
+      "tag": "green"
+     },
+     {
+      "id": 1081,
+      "loc": {
+       "x": 8,
+       "y": 58.5
+      },
+      "on": true,
+      "price": 819.13,
+      "tag": "violet"
+     },
+     {
+      "id": 1084,
+      "loc": {
+       "x": 16,
+       "y": 10.5
+      },
+      "note": "violet item",
+      "on": true,
+      "price": 864.2,
+      "tag": "amber"
+     },
+     {
+      "id": 1087,
+      "loc": {
+       "x": 34,
+       "y": 56.9
+      },
+      "on": true,
+      "price": 851.6,
+      "tag": "amber"
+     },
+     {
+      "id": 1090,
+      "loc": {
+       "x": 24,
+       "y": 7
+      },
+      "note": "red item",
+      "on": true,
+      "price": 46.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1093,
+      "loc": {
+       "x": 29,
+       "y": 58
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 586.87,
+      "tag": "violet"
+     },
+     {
+      "id": 1096,
+      "loc": {
+       "x": 11,
+       "y": 65.3
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 804.37,
+      "tag": "green"
+     },
+     {
+      "id": 1099,
+      "loc": {
+       "x": 27,
+       "y": 49.6
+      },
+      "note": "red item",
+      "on": false,
+      "price": 561.16,
+      "tag": "blue"
+     },
+     {
+      "id": 1102,
+      "loc": {
+       "x": 40,
+       "y": 76.4
+      },
+      "note": "green item",
+      "on": false,
+      "price": 139.16,
+      "tag": "red"
+     },
+     {
+      "id": 1105,
+      "loc": {
+       "x": 41,
+       "y": 65.5
+      },
+      "on": false,
+      "price": 826.68,
+      "tag": "green"
+     },
+     {
+      "id": 1108,
+      "loc": {
+       "x": 28,
+       "y": 4.7
+      },
+      "note": "green item",
+      "on": true,
+      "price": 17.56,
+      "tag": "red"
+     },
+     {
+      "id": 1111,
+      "loc": {
+       "x": 6,
+       "y": 26.5
+      },
+      "note": "green item",
+      "on": true,
+      "price": 129.15,
+      "tag": "red"
+     },
+     {
+      "id": 1114,
+      "loc": {
+       "x": 47,
+       "y": 8.5
+      },
+      "note": "amber item",
+      "on": true,
+      "price": 903.45,
+      "tag": "blue"
+     },
+     {
+      "id": 1117,
+      "loc": {
+       "x": 44,
+       "y": 41.3
+      },
+      "note": "green item",
+      "on": false,
+      "price": 682.77,
+      "tag": "violet"
+     },
+     {
+      "id": 1120,
+      "loc": {
+       "x": 28,
+       "y": 73.9
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 483.08,
+      "tag": "violet"
+     },
+     {
+      "id": 1123,
+      "loc": {
+       "x": 9,
+       "y": 29.4
+      },
+      "note": "red item",
+      "on": false,
+      "price": 693.88,
+      "tag": "amber"
+     },
+     {
+      "id": 1126,
+      "loc": {
+       "x": 32,
+       "y": 31.4
+      },
+      "note": "violet item",
+      "on": false,
+      "price": 110.63,
+      "tag": "green"
+     },
+     {
+      "id": 1129,
+      "loc": {
+       "x": 32,
+       "y": 22.6
+      },
+      "on": true,
+      "price": 155.4,
+      "tag": "red"
+     },
+     {
+      "id": 1132,
+      "loc": {
+       "x": 0,
+       "y": 35.3
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 187.57,
+      "tag": "amber"
+     },
+     {
+      "id": 1135,
+      "loc": {
+       "x": 36,
+       "y": 83.6
+      },
+      "on": true,
+      "price": 395.97,
+      "tag": "red"
+     },
+     {
+      "id": 1138,
+      "loc": {
+       "x": 48,
+       "y": 29.9
+      },
+      "on": true,
+      "price": 21.01,
+      "tag": "violet"
+     },
+     {
+      "id": 1141,
+      "loc": {
+       "x": 13,
+       "y": 14.2
+      },
+      "note": "blue item",
+      "on": true,
+      "price": 367.5,
+      "tag": "amber"
+     },
+     {
+      "id": 1144,
+      "loc": {
+       "x": 13,
+       "y": 20.7
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 813.21,
+      "tag": "violet"
+     },
+     {
+      "id": 1147,
+      "loc": {
+       "x": 13,
+       "y": 32.9
+      },
+      "on": false,
+      "price": 498.05,
+      "tag": "red"
+     },
+     {
+      "id": 1150,
+      "loc": {
+       "x": 5,
+       "y": 41.6
+      },
+      "on": true,
+      "price": 851.87,
+      "tag": "amber"
+     },
+     {
+      "id": 1153,
+      "loc": {
+       "x": 5,
+       "y": 2.4
+      },
+      "note": "green item",
+      "on": true,
+      "price": 438.37,
+      "tag": "blue"
+     },
+     {
+      "id": 1156,
+      "loc": {
+       "x": 17,
+       "y": 27.8
+      },
+      "on": true,
+      "price": 346.9,
+      "tag": "green"
+     },
+     {
+      "id": 1159,
+      "loc": {
+       "x": 5,
+       "y": 11.6
+      },
+      "note": "blue item",
+      "on": false,
+      "price": 110.15,
+      "tag": "amber"
+     },
+     {
+      "id": 1162,
+      "loc": {
+       "x": 25,
+       "y": 35.2
+      },
+      "note": "amber item",
+      "on": false,
+      "price": 138.3,
+      "tag": "violet"
+     },
+     {
+      "id": 1165,
+      "loc": {
+       "x": 46,
+       "y": 56.6
+      },
+      "on": true,
+      "price": 650.1,
+      "tag": "violet"
+     },
+     {
+      "id": 1168,
+      "loc": {
+       "x": 42,
+       "y": 64.5
+      },
+      "on": false,
+      "price": 462.04,
+      "tag": "blue"
+     },
+     {
+      "id": 1171,
+      "loc": {
+       "x": 15,
+       "y": 84.5
+      },
+      "on": false,
+      "price": 643.82,
+      "tag": "green"
+     },
+     {
+      "id": 1174,
+      "loc": {
+       "x": 49,
+       "y": 39.9
+      },
+      "on": false,
+      "price": 385.22,
+      "tag": "amber"
+     },
+     {
+      "id": 1177,
+      "loc": {
+       "x": 41,
+       "y": 87.2
+      },
+      "note": "green item",
+      "on": false,
+      "price": 86.56,
+      "tag": "green"
+     }
+    ]
+   }
+  },
+  {
+   "name": "scalars",
+   "json": {
+    "a": 1,
+    "b": 2.5,
+    "c": true,
+    "d": false,
+    "e": null,
+    "f": "hi",
+    "g": -9007199254740991
+   }
+  },
+  {
+   "name": "sparse",
+   "json": {
+    "rows": [
+     {
+      "email": "a@x.io",
+      "id": 1,
+      "name": "ann"
+     },
+     {
+      "id": 2,
+      "name": "bob"
+     },
+     {
+      "email": "c@x.io",
+      "id": 3,
+      "x": "^"
+     },
+     {
+      "^": "k",
+      "id": 4,
+      "name": "^"
+     }
+    ]
+   }
+  },
+  {
+   "name": "sparseempty",
+   "json": [
+    {
+     "a": 1,
+     "b": 2
+    },
+    {},
+    {
+     "a": 3
+    }
+   ]
+  },
+  {
+   "name": "table",
+   "json": {
+    "rows": [
+     {
+      "id": 1,
+      "n": null,
+      "name": "ann",
+      "tags": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "id": 2,
+      "n": 1.5,
+      "name": "bob smith",
+      "tags": []
+     },
+     {
+      "id": 300,
+      "n": "x",
+      "name": "ann",
+      "tags": [
+       "a"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "toplevel",
+   "json": "just a string"
+  },
+  {
+   "name": "topnum",
+   "json": 3.25
+  }
+ ],
+ "badText": [
+  "",
+  "{",
+  "[1 2",
+  "\"abc",
+  "[|a b| 1 2 3]",
+  "a:",
+  "}",
+  "a:1 b",
+  "\"\\q\"",
+  "[|| 1]",
+  "[|a| 1] x",
+  "a:*x",
+  "a:\u0026x 1 b:\u0026x 2",
+  "a:{*x}",
+  "a:\u0026x 1 b:{*x}",
+  "a:\u0026",
+  "a:1 a:2",
+  "{a:1 a:2}",
+  "[|a a| 1 2]",
+  "{|a b| x 1 2 x 3 4}",
+  "\"\\u+041\"",
+  "\"\\ud83d\"",
+  "\"\\ud83dx\"",
+  "\"\\ude00\"",
+  "\"\\ud83d\\u0041\"",
+  "a:{b:1 b:2}",
+  "b:\u0026b {x:1} a:{*b y:1 y:2}",
+  "[|a b{c c}| 1 2 3]"
+ ],
+ "badTextHex": [
+  "fffe",
+  "613aff"
+ ],
+ "badBinaryHex": [
+  "",
+  "0f0107ffffffff0f",
+  "0f010605",
+  "0f01040102",
+  "0f010900",
+  "0f0103",
+  "0f010202",
+  "0f0108010300",
+  "0f0200",
+  "00",
+  "0f0104000000000000f87f",
+  "0f0104000000000000f07f",
+  "0f010d014161030183008182",
+  "0f010802416180416181"
+ ],
+ "version": 1
+}

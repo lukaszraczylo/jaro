@@ -1,0 +1,5 @@
+{"kind":"protocol","metric":"sum_ns_per_op","direction":"lower","threshold":{"value":3.0,"relative":true},"budget":"300x x5 min","stop":{"trials":12,"no_improve":4}}
+{"id":"01","mutation":"baseline","metric":4106220.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text table decode into row maps, no flat slice","metric":3982980.0,"delta":-123240.0,"kept":"KEEP"}
+{"id":"03","mutation":"text key() without boxing (still boxed in bareValue)","metric":3993033.0,"delta":10053.0,"kept":"revert"}
+{"id":"04","mutation":"binary dict column: box strings once, share across cells (allocs 85372->77460)","metric":3902210.0,"delta":-80770.0,"kept":"revert"}

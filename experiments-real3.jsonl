@@ -1,0 +1,16 @@
+{"kind":"protocol","metric":"sum_ns_per_op","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"measure-real.sh: 100x, min of 12, 6 real files x 4 ops","stop":{"trials":20,"no_improve":10}}
+{"id":"01","mutation":"baseline after the speed and format passes","metric":40920201.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"tableRows: start with room for 64 rows","metric":41020611.0,"delta":100410.0,"kept":"revert"}
+{"id":"03","mutation":"text objBody: start maps with room for 8 keys","metric":40852435.0,"delta":-67766.0,"kept":"revert"}
+{"id":"04","mutation":"binary encoder: look up the pool before validating UTF-8","metric":40503639.0,"delta":-416562.0,"kept":"KEEP"}
+{"id":"05","mutation":"classifyNumbers: scan values again instead of allocating a num slice","metric":40182394.0,"delta":-321245.0,"kept":"revert"}
+{"id":"06","mutation":"intern: only strings up to 20 bytes","metric":40554262.0,"delta":50623.0,"kept":"revert"}
+{"id":"07","mutation":"intern: table capped at 512 entries","metric":40322034.0,"delta":-181605.0,"kept":"revert"}
+{"id":"08","mutation":"intern: stop adding once hits fall below half the entries after 128","metric":40443753.0,"delta":-59886.0,"kept":"revert"}
+{"id":"09","mutation":"binary decoder: presize the string pool to 256","metric":40384250.0,"delta":-119389.0,"kept":"revert"}
+{"id":"10","mutation":"text decoder: presize the array element stack to 64","metric":40435539.0,"delta":-68100.0,"kept":"revert"}
+{"id":"11","mutation":"cell arena: 1024-cell chunks","metric":40803051.0,"delta":299412.0,"kept":"revert"}
+{"id":"12","mutation":"cell arena: share chunks for arrays up to 16","metric":40742783.0,"delta":239144.0,"kept":"revert"}
+{"id":"13","mutation":"binary encoder: reuse the column plan instead of classifying twice","metric":40756727.0,"delta":253088.0,"kept":"revert"}
+{"id":"14","mutation":"text decoder value: call ws only when whitespace or a comment is next","metric":40432029.0,"delta":-71610.0,"kept":"revert"}
+{"id":"15","mutation":"text decoder: collect object members on a stack and build the map at exact size","metric":40236575.0,"delta":-267064.0,"kept":"revert"}

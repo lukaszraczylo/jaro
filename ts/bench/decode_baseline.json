@@ -1,0 +1,14 @@
+{
+ "canada.json:binary": 2.3059,
+ "canada.json:text": 12.6084,
+ "citm_catalog.json:binary": 0.716,
+ "citm_catalog.json:text": 1.1879,
+ "github_issues.json:binary": 0.673,
+ "github_issues.json:text": 1.3062,
+ "npm_express.json:binary": 1.7369,
+ "npm_express.json:text": 2.429,
+ "recipe_book.json:binary": 0.0364,
+ "recipe_book.json:text": 0.0346,
+ "twitter.json:binary": 0.7886,
+ "twitter.json:text": 1.1881
+}

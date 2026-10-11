@@ -1,0 +1,14 @@
+{"kind":"protocol","metric":"geomean_ratio_jaro_over_jsonparse","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"12 cells; paired JSON.parse rounds in-process; per-cell min over 4 interleaved A/B process pairs; keep if geo improves >=1% and no cell >3% worse","stop":{"trials":50,"no_improve":12}}
+{"id":"01","mutation":"baseline (end of decode2 loop)","metric":0.9311,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text: native JSON.parse for nested numeric arrays (A/B geo ratio 1.0048, worst cell +6.1%)","metric":0.9356,"delta":0.0044999999999999485,"kept":"revert"}
+{"id":"03","mutation":"text: native JSON.parse for nested numeric arrays (canada text +6%; standalone: replace+parse+walk >= scanner)","metric":0.9356,"delta":0.0044999999999999485,"kept":"revert"}
+{"id":"04","mutation":"bin: compiled row factories for dense tables and object columns (after 256 rows per shape) (A/B geo ratio 1.0033, worst cell +6.7%)","metric":0.9342,"delta":0.0030999999999999917,"kept":"revert"}
+{"id":"05","mutation":"bin: per-document key-sequence trie + compiled object factories for T_OBJ (A/B geo ratio 1.0213, worst cell +34.0%)","metric":0.9509,"delta":0.01979999999999993,"kept":"revert"}
+{"id":"06","mutation":"bin: predicted key sequence (first ref + count) with compiled object factories for T_OBJ (A/B geo ratio 0.9531, worst cell +3.0%)","metric":0.8874,"delta":-0.04370000000000007,"kept":"KEEP"}
+{"id":"07","mutation":"text: per-depth predicted key sequence (startsWith) with compiled object factories (A/B geo ratio 1.0285, worst cell +14.8%)","metric":0.9127,"delta":0.02529999999999999,"kept":"revert"}
+{"id":"08","mutation":"text: predicted key sequence by first key (Map) with compiled object factories (A/B geo ratio 0.9934, worst cell +4.1%)","metric":0.8815,"delta":-0.005900000000000016,"kept":"revert"}
+{"id":"09","mutation":"text: first-key prediction, candidate recorded on second sighting of the first key (A/B geo ratio 0.991, worst cell +5.3%)","metric":0.8794,"delta":-0.008000000000000007,"kept":"revert"}
+{"id":"10","mutation":"text: first-key prediction starts after 64 objects per document (A/B geo ratio 0.9875, worst cell +2.3%)","metric":0.8763,"delta":-0.011099999999999999,"kept":"KEEP"}
+{"id":"11","mutation":"text: flat table rows built through compiled factories (A/B geo ratio 1.0287, worst cell +20.2%)","metric":0.9014,"delta":0.02510000000000001,"kept":"revert"}
+{"id":"12","mutation":"text: flat table row factories after 16 rows per table (A/B geo ratio 0.9822, worst cell +5.0%) [reverted: cell >3%]","metric":0.8607,"delta":-0.015599999999999947,"kept":"revert"}
+{"id":"13","mutation":"bin: predict object shapes from 2 keys instead of 3 (A/B geo ratio 0.9941, worst cell +5.2%)","metric":0.8711,"delta":-0.005199999999999982,"kept":"revert"}

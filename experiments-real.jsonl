@@ -1,0 +1,13 @@
+{"kind":"protocol","metric":"sum_ns_per_op","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"measure-real.sh: 100x x5, min per bench, 6 real files x 4 ops","stop":{"trials":30,"no_improve":10}}
+{"id":"01","mutation":"baseline","metric":43609884.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text array: start with capacity 2","metric":42613877.0,"delta":-996007.0,"kept":"KEEP"}
+{"id":"03","mutation":"sortedKeys: slices.Sort instead of sort.Strings","metric":43692487.0,"delta":1078610.0,"kept":"revert"}
+{"id":"04","mutation":"sortedKeys: slices.Sort instead of sort.Strings (rerun, 12-run min)","metric":42969604.0,"delta":355727.0,"kept":"revert"}
+{"id":"05","mutation":"encoders: reuse a scratch stack for sorted object keys","metric":42327851.0,"delta":-286026.0,"kept":"revert"}
+{"id":"06","mutation":"text decoder: read bare object keys without boxing, with a key cache","metric":42436798.0,"delta":-177079.0,"kept":"revert"}
+{"id":"07","mutation":"text array: collect elements on a shared stack and copy once at exact size","metric":42341830.0,"delta":-272047.0,"kept":"revert"}
+{"id":"08","mutation":"text array: short arrays share 256-cell chunks","metric":42171592.0,"delta":-442285.0,"kept":"KEEP"}
+{"id":"09","mutation":"binary array: short arrays share 256-cell chunks","metric":41827060.0,"delta":-344532.0,"kept":"revert"}
+{"id":"10","mutation":"encoders: reuse a scratch stack for sorted object keys (rerun)","metric":41731357.0,"delta":-440235.0,"kept":"KEEP"}
+{"id":"11","mutation":"binary array: short arrays share cell chunks through a shared cellArena","metric":41620049.0,"delta":-111308.0,"kept":"revert"}
+{"id":"12","mutation":"binary array: short arrays share cell chunks (retry)","metric":41182400.0,"delta":-548957.0,"kept":"KEEP"}

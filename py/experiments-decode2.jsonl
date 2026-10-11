@@ -1,0 +1,31 @@
+{"kind":"protocol","metric":"decode_geomean_ratio","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"12 cells time/baseline_time geomean, per-cell min of 3 passes; no cell regress >3%","stop":{"trials":30,"no_improve":8}}
+{"id":"01","mutation":"baseline after part 1 (strict grammar); cells in bench/decode_baseline.json; remeasured 0.9989","metric":1.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text: escaped strings via find-close + validate + backslashreplace/unicode_escape (github text -19%); worst cell +2.4% noise","metric":0.9852,"delta":-0.014800000000000035,"kept":"KEEP"}
+{"id":"03","mutation":"binary: 1-byte T_REF fast path first in _key and _value (npm bin -3%, github bin -4%)","metric":0.97,"delta":-0.015199999999999991,"kept":"KEEP"}
+{"id":"04","mutation":"binary: T_REF fast path also resolves 2-byte pool indexes inline (npm bin -21%, twitter bin -15%)","metric":0.9362,"delta":-0.03379999999999994,"kept":"KEEP"}
+{"id":"05","mutation":"binary: inline 1-byte ref key in T_OBJ loop (slower)","metric":0.9493,"delta":0.0131,"kept":"revert"}
+{"id":"06","mutation":"text: single-space skip before ws regex at table row top","metric":0.9404,"delta":0.0041999999999999815,"kept":"revert"}
+{"id":"07","mutation":"text: one-regex fast path for plain top-level table headers (citm text -7%); 2 measurements 0.9253/0.9226","metric":0.924,"delta":-0.012199999999999989,"kept":"KEEP"}
+{"id":"08","mutation":"text: probe first cell at row top instead of ws+closer check","metric":0.9287,"delta":0.0046999999999999265,"kept":"revert"}
+{"id":"09","mutation":"text: keyword/word group in _CELL_MATCH with _WORDS dict lookup (paired A/B vs snapshot 1.0053, citm text +5.7%); metric = last kept x A/B ratio from here on","metric":0.9289,"delta":0.004899999999999904,"kept":"revert"}
+{"id":"10","mutation":"text: one _PAIR_MATCH (key + scalar value) per object member before the key/value split path; A/B vs snapshot 0.9852","metric":0.9103,"delta":-0.013700000000000045,"kept":"KEEP"}
+{"id":"11","mutation":"text: container-opener alternative in _PAIR_MATCH to skip KEY/CELL re-matching (A/B 1.0085)","metric":0.918,"delta":0.00770000000000004,"kept":"revert"}
+{"id":"12","mutation":"binary: inline _charge in _column (A/B 0.9955)","metric":0.9063,"delta":-0.0040000000000000036,"kept":"revert"}
+{"id":"13","mutation":"binary: inline 1-byte varint in DELTA/DECIMAL/DICT column loops (citm bin -8%); A/B 0.9850","metric":0.8966,"delta":-0.013700000000000045,"kept":"KEEP"}
+{"id":"14","mutation":"binary: 1-byte fast path inside _count/_row_count (A/B 0.9914)","metric":0.8888,"delta":-0.007799999999999918,"kept":"revert"}
+{"id":"15","mutation":"binary: T_OBJ loop resolves 1-2 byte ref keys inline (npm/twitter bin -5..-7%); A/B 0.9858","metric":0.8839,"delta":-0.012699999999999934,"kept":"KEEP"}
+{"id":"16","mutation":"binary: also inline small-int/ref values in T_OBJ loop (A/B 1.0146, twitter bin +7%)","metric":0.8968,"delta":0.012900000000000023,"kept":"revert"}
+{"id":"17","mutation":"text: int group in _CELL_MATCH/_PAIR_MATCH (A/B 0.9972)","metric":0.8815,"delta":-0.0024000000000000687,"kept":"revert"}
+{"id":"18","mutation":"text: early '}' check at object loop top (A/B 0.9991)","metric":0.883,"delta":-0.0009000000000000119,"kept":"revert"}
+{"id":"19","mutation":"text: drop redundant self.pos write after pair match (A/B 1.0007)","metric":0.8845,"delta":0.0005999999999999339,"kept":"revert"}
+{"id":"20","mutation":"binary: _header via list comprehension + set length check (A/B 0.9988)","metric":0.8828,"delta":-0.0010999999999999899,"kept":"revert"}
+{"id":"21","mutation":"text: Match subscripts m[n] instead of m.group(n) (text cells -2..-5%); A/B 0.9919 then 0.9892","metric":0.8744,"delta":-0.0095,"kept":"KEEP"}
+{"id":"22","mutation":"binary: _value/_key read the tag under try/except IndexError instead of a bounds compare (bin cells -3..-4%); A/B 0.9845","metric":0.8608,"delta":-0.013599999999999945,"kept":"KEEP"}
+{"id":"23","mutation":"binary: same IndexError trick in _uvarint and _column kind read; A/B 0.9885","metric":0.8509,"delta":-0.00990000000000002,"kept":"KEEP"}
+{"id":"24","mutation":"text: skip _CELL_MATCH when object value starts with { or [ (A/B 1.0025)","metric":0.8531,"delta":0.0021999999999999797,"kept":"revert"}
+{"id":"25","mutation":"binary: T_OBJ values: inline ref and null/bool constants (A/B 1.0026)","metric":0.8531,"delta":0.0021999999999999797,"kept":"revert"}
+{"id":"26","mutation":"text: table-row path bundle (probe first cell + dict(zip) w/o ABSENT) + int group in cell/pair regex (A/B 0.9908; twitter text +3.4%, npm text +2.9% violate the 3% cell rule)","metric":0.8431,"delta":-0.007800000000000029,"kept":"revert"}
+{"id":"27","mutation":"text: flat int array fast path at '[' in _value (A/B 1.0001)","metric":0.851,"delta":9.999999999998899e-05,"kept":"revert"}
+{"id":"28","mutation":"text: single-space skip by index (no slice) before ws regex at _value top, array loop, table row top, cell slow path (text cells -2..-6%); A/B 0.9863","metric":0.8392,"delta":-0.011700000000000044,"kept":"KEEP"}
+{"id":"29","mutation":"text: single-space/no-space skip also after '[' and '{' openers (A/B 0.9937)","metric":0.8339,"delta":-0.005299999999999971,"kept":"revert"}
+{"id":"30","mutation":"binary: 1-byte fast path in _count/_row_count plus inline T_ARR count (A/B 0.9997)","metric":0.8389,"delta":-0.00029999999999996696,"kept":"revert"}

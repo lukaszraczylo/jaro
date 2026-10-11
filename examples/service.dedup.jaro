@@ -1,0 +1,1 @@
+debug:false defaults:&a0 {cpu:"500m" memory:"512Mi" region:eu-west-1} limits:{burst:40 rps:250 timeout_s:2.5} name:orders-api note:"rolling update: 2 of 3 \"healthy\"" owner:~ replicas:[|cfg healthy host id tags weight| *a0 true node-a 1 [blue ssd] 1.5 *a0 true node-b 2 [blue] 1 *a0 false node-c 3 [] 0.5] version:3

@@ -1,0 +1,7 @@
+{"kind":"protocol","metric":"sum_allocs_per_op","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"300x x5 min","stop":{"trials":10,"no_improve":4}}
+{"id":"01","mutation":"baseline","metric":64651.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text decode: intern repeated bare strings (boxed once, bounded 4096)","metric":44782.0,"delta":-19869.0,"kept":"KEEP"}
+{"id":"03","mutation":"binary decode: box pooled string refs once","metric":44782.0,"delta":0.0,"kept":"revert"}
+{"id":"04","mutation":"preboxed ints 0..1023 shared interface values","metric":41355.0,"delta":-3427.0,"kept":"KEEP"}
+{"id":"05","mutation":"text decode: intern quoted strings too (guard number-like tokens)","metric":38537.0,"delta":-2818.0,"kept":"KEEP"}
+{"id":"06","mutation":"text decode: plain decimals parsed from bytes (exact Clinger path), -0 normalised","metric":35757.0,"delta":-2780.0,"kept":"KEEP"}

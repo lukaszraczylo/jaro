@@ -1,0 +1,17 @@
+# Read by the shared release workflow (lukaszraczylo/semver-generator).
+version: 1
+
+force:
+  existing: true
+  strict: false
+
+# Only a `Semver-Major:` trailer line may start a major release.
+matching: regex
+
+wording:
+  patch:
+    - '(?m)^(fix|perf|refactor|revert|build|chore|ci|docs|style|test)(\([^)]*\))?!?:'
+  minor:
+    - '(?m)^feat(\([^)]*\))?!?:'
+  major:
+    - '(?m)^Semver-Major:'

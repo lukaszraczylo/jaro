@@ -1,0 +1,12 @@
+{"kind":"protocol","metric":"sum_allocs_per_op","direction":"lower","threshold":{"value":0.5,"relative":true},"budget":"300x x5 min","stop":{"trials":50,"no_improve":10}}
+{"id":"01","mutation":"baseline","metric":35757.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text decode: one string copy of input, tokens are substrings (strings pin the input copy)","metric":34655.0,"delta":-1102.0,"kept":"KEEP"}
+{"id":"03","mutation":"binary decode: one string copy of input, strings are substrings","metric":33553.0,"delta":-1102.0,"kept":"KEEP"}
+{"id":"04","mutation":"text tableRows: initial rows capacity 64","metric":33541.0,"delta":-12.0,"kept":"revert"}
+{"id":"05","mutation":"binary decode: pool initial capacity 256","metric":33540.0,"delta":-13.0,"kept":"revert"}
+{"id":"06","mutation":"text decode: intern map initial capacity 64","metric":33543.0,"delta":-10.0,"kept":"revert"}
+{"id":"07","mutation":"boxed int table 4096 entries","metric":33484.0,"delta":-69.0,"kept":"revert"}
+{"id":"08","mutation":"classifyNumbers: no per-column num slice (re-normalise instead)","metric":33547.0,"delta":-6.0,"kept":"revert"}
+{"id":"09","mutation":"binary decode: drop parallel maps slice (assert from []any)","metric":33550.0,"delta":-3.0,"kept":"revert"}
+{"id":"10","mutation":"text intern: box the first occurrence once (table and caller share it)","metric":32449.0,"delta":-1104.0,"kept":"KEEP"}
+{"id":"11","mutation":"binary decode: read keys directly, no boxing","metric":32345.0,"delta":-104.0,"kept":"revert"}

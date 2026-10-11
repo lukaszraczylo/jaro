@@ -1,0 +1,29 @@
+{"kind":"protocol","metric":"decode_ms_sum","direction":"lower","threshold":{"value":1.5,"relative":true},"budget":"6 files x (text+binary), min of 9 runs ~50ms each, gc off in harness","stop":{"trials":30,"no_improve":8}}
+{"id":"01","mutation":"baseline (median of 3: 303.6/300.4/297.4)","metric":300.424,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text: single _NUMTOK fullmatch in _bare_value (int/float) replaces _INT+_PLAIN_FLOAT fullmatch pair (metric=mean of 2 runs 285.9/291.0)","metric":288.466,"delta":-11.95799999999997,"kept":"KEEP"}
+{"id":"03","mutation":"text: array/table-cell loops use _ITEM_MATCH (plain-decimal-float alt | bare) and float() inline, skipping _bare_value for non-integral decimals","metric":261.687,"delta":-26.778999999999996,"kept":"KEEP"}
+{"id":"04","mutation":"text: flat all-float array fast path (one regex + split + map(float)) in array loop, skipped if any value integral","metric":218.33,"delta":-43.357,"kept":"KEEP"}
+{"id":"05","mutation":"binary: T_ARR loop inlines small-int and non-integral finite float elements (Struct.unpack_from), no _value call","metric":204.0,"delta":-14.330000000000013,"kept":"KEEP"}
+{"id":"06","mutation":"text: inline bare/float scalar values in object loop (skip _value call)","metric":205.96,"delta":1.960000000000008,"kept":"revert"}
+{"id":"07","mutation":"text: table-cell loop tries one _CELL_MATCH (ws + no-escape quoted | float | bare, ^ -> ABSENT) before slow path","metric":200.185,"delta":-3.8149999999999977,"kept":"KEEP"}
+{"id":"08","mutation":"text: _CELL_MATCH at top of array loop (extra failed match on nested arrays hurts canada)","metric":209.43,"delta":9.245000000000005,"kept":"revert"}
+{"id":"09","mutation":"text: object loop fast path: _KEY_MATCH (ws + key:) then _CELL_MATCH for scalar value, before slow path","metric":190.4,"delta":-9.784999999999997,"kept":"KEEP"}
+{"id":"10","mutation":"text: int alternative in _CELL_MATCH (direct int(), skip _bare_value)","metric":192.3,"delta":1.9000000000000057,"kept":"revert"}
+{"id":"11","mutation":"text: empty [] / {} alternative in _CELL_MATCH (cells + object values)","metric":186.74,"delta":-3.6599999999999966,"kept":"KEEP"}
+{"id":"12","mutation":"binary: inline 1-byte T_REF fast path in _key and _value","metric":186.0,"delta":-0.7400000000000091,"kept":"revert"}
+{"id":"13","mutation":"binary: shared _values() helper (ref/short-str/float inline) for T_ARR and GENERIC columns; helper call cost hurt canada, 1 test failed","metric":194.06,"delta":7.319999999999993,"kept":"revert"}
+{"id":"14","mutation":"binary: move T_ARR branch ahead of NULL/FALSE/TRUE/INT/FLOAT/STR/REF tests in _value","metric":182.03,"delta":-4.710000000000008,"kept":"KEEP"}
+{"id":"15","mutation":"binary: batch float-run decode via cached Struct('<xd...') + tag-slice check in T_ARR","metric":181.17,"delta":-0.8600000000000136,"kept":"revert"}
+{"id":"16","mutation":"binary: inline 1-byte count in T_ARR","metric":180.01,"delta":-2.0200000000000102,"kept":"revert"}
+{"id":"17","mutation":"text: [[n n] [n n]] matrix fast path (cached per-k regex, one split+map(float), zip rows; ints <=15 digits normalised)","metric":174.57,"delta":-7.460000000000008,"kept":"KEEP"}
+{"id":"18","mutation":"text: matrix body tokenised with str.replace+split instead of re.split","metric":163.63,"delta":-10.939999999999998,"kept":"KEEP"}
+{"id":"19","mutation":"binary: arrays of equal-length float arrays decoded via strided tag checks + Struct.iter_unpack","metric":152.33,"delta":-11.299999999999983,"kept":"KEEP"}
+{"id":"20","mutation":"binary: float matrix decoded in 64-row chunks so one integral row only slows its own chunk","metric":138.74,"delta":-13.590000000000003,"kept":"KEEP"}
+{"id":"21","mutation":"text: dict(zip(keys,cells)) when no ABSENT cell (absent flag)","metric":137.3,"delta":-1.4399999999999977,"kept":"revert"}
+{"id":"22","mutation":"binary: T_OBJ loop inlines ref keys and small-int/ref values (setup cost on small objects made npm/twitter slower)","metric":141.1,"delta":2.359999999999985,"kept":"revert"}
+{"id":"23","mutation":"binary: inline short-string decode in _value","metric":137.62,"delta":-1.1200000000000045,"kept":"revert"}
+{"id":"24","mutation":"text: _quoted simple-escape fast path (unrolled regex + 4 str.replace) for strings with only \\\" \\n \\r \\t","metric":137.8,"delta":-0.9399999999999977,"kept":"revert"}
+{"id":"25","mutation":"binary: bulk _uvarints() for DELTA/DECIMAL/DICT columns (accumulate, comprehensions)","metric":136.96,"delta":-1.7800000000000011,"kept":"revert"}
+{"id":"26","mutation":"binary: _table builds rows with dict(zip(cols,r)) over zip(*columns)","metric":138.2,"delta":-0.5400000000000205,"kept":"revert"}
+{"id":"27","mutation":"both: __slots__ on _Decoder classes","metric":138.1,"delta":-0.6400000000000148,"kept":"revert"}
+{"id":"28","mutation":"text: matrix regex token class [-0-9.]+ with float() ValueError fallback","metric":137.85,"delta":-0.8900000000000148,"kept":"revert"}

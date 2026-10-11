@@ -1,0 +1,20 @@
+{
+ "BenchmarkReal/bin_dec_canada": 2141369.0,
+ "BenchmarkReal/bin_dec_citm_catalog": 1714615.0,
+ "BenchmarkReal/bin_dec_github_issues": 451311.0,
+ "BenchmarkReal/bin_dec_npm_express": 1771667.0,
+ "BenchmarkReal/bin_dec_recipe_book": 28479.0,
+ "BenchmarkReal/bin_dec_twitter": 601592.0,
+ "BenchmarkReal/text_dec_canada": 9814888.0,
+ "BenchmarkReal/text_dec_citm_catalog": 1833781.0,
+ "BenchmarkReal/text_dec_github_issues": 1620335.0,
+ "BenchmarkReal/text_dec_npm_express": 2829561.0,
+ "BenchmarkReal/text_dec_recipe_book": 49717.0,
+ "BenchmarkReal/text_dec_twitter": 1311474.0,
+ "BenchmarkRealArena/arena_canada": 7766715.0,
+ "BenchmarkRealArena/arena_citm_catalog": 1034344.0,
+ "BenchmarkRealArena/arena_github_issues": 1053032.0,
+ "BenchmarkRealArena/arena_npm_express": 1244969.0,
+ "BenchmarkRealArena/arena_recipe_book": 24415.0,
+ "BenchmarkRealArena/arena_twitter": 649374.0
+}

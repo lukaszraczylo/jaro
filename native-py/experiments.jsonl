@@ -1,0 +1,9 @@
+{"kind":"protocol","metric":"geomean native/json ratio over 6 corpus files","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"bench.py 25 rounds x3 runs, per-file min ratio; revert if any file regresses >3%","stop":{"trials":10,"no_improve":0}}
+{"id":"01","mutation":"baseline","metric":0.2229,"delta":null,"kept":"base","note":"{\"canada\": 0.1548, \"citm_catalog\": 0.2135, \"github_issues\": 0.1791, \"npm_express\": 0.331, \"recipe_book\": 0.3038, \"twitter\": 0.206}"}
+{"id":"02","mutation":"lazy HashSet in unique_keys (avoid RandomState TLS)","metric":0.224,"delta":0.0011000000000000176,"kept":"revert"}
+{"id":"03","mutation":"one PyDict_Size per object insert","metric":0.2239,"delta":0.0010000000000000009,"kept":"revert"}
+{"id":"04","mutation":"2-byte varint inline fast path","metric":0.2231,"delta":0.00020000000000000573,"kept":"revert"}
+{"id":"05","mutation":"table rows from PyDict_Copy of key template","metric":0.2322,"delta":0.009300000000000003,"kept":"revert"}
+{"id":"06","mutation":"object keys from pool refs borrowed without refcount traffic","metric":0.2189,"delta":-0.003999999999999976,"kept":"KEEP","note":"{\"canada\": 0.1563, \"citm_catalog\": 0.2089, \"github_issues\": 0.1832, \"npm_express\": 0.3224, \"recipe_book\": 0.2882, \"twitter\": 0.1979}"}
+{"id":"07","mutation":"array loop: inline small-int and pool-ref fast paths","metric":0.2212,"delta":0.0022999999999999965,"kept":"revert"}
+{"id":"08","mutation":"ASCII pre-check + PyUnicode_DecodeASCII","metric":0.2221,"delta":0.0031999999999999806,"kept":"revert"}

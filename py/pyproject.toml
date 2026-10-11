@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jaro"
+version = "0.1.0"
+description = "JARO text and binary data format (pure Python)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = []
+
+[project.optional-dependencies]
+native = ["jaro-native"]
+dev = [
+  "pytest==9.1.1",
+  "mypy==2.4.0",
+  "pyyaml==6.0.3",
+  "types-PyYAML==6.0.12.20260906",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jaro"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[project.urls]
+Homepage = "https://jaro.raczylo.com"
+Repository = "https://github.com/lukaszraczylo/jaro"

@@ -1,0 +1,14 @@
+{
+ "canada/bin": 0.5654798992407275,
+ "canada/text": 1.9396151069347145,
+ "citm_catalog/bin": 2.3570592953758154,
+ "citm_catalog/text": 3.8092739782226865,
+ "github_issues/bin": 2.1009248801303415,
+ "github_issues/text": 4.144482715105189,
+ "npm_express/bin": 4.808100671740912,
+ "npm_express/text": 6.340230721931914,
+ "recipe_book/bin": 4.7041712924118295,
+ "recipe_book/text": 7.219384139072654,
+ "twitter/bin": 2.844153703222558,
+ "twitter/text": 4.151948224942099
+}

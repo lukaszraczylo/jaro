@@ -1,0 +1,179 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".github/workflows/pages.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  go:
+    uses: lukaszraczylo/shared-actions/.github/workflows/go-release.yaml@main
+    with:
+      go-version: ">=1.24"
+      semver-config: "semver.yaml"
+    secrets: inherit
+
+  # The zstdenc module needs its own tag, and its go.mod must not point at ../ when consumers fetch it.
+  zstdenc-tag:
+    needs: go
+    if: needs.go.outputs.version_tag != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ">=1.24"
+      - name: Tag zstdenc against the released root module
+        env:
+          TAG: ${{ needs.go.outputs.version_tag }}
+          GOPROXY: direct
+          GONOSUMDB: github.com/lukaszraczylo/*
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --detach
+          cd zstdenc
+          go mod edit -dropreplace github.com/lukaszraczylo/jaro -require "github.com/lukaszraczylo/jaro@${TAG}"
+          go mod tidy
+          go build ./...
+          git commit -am "chore(zstdenc): pin jaro ${TAG}"
+          git tag "zstdenc/${TAG}"
+          git push origin "zstdenc/${TAG}"
+
+  version:
+    needs: go
+    if: always() && needs.go.result == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: v
+        run: |
+          tag=$(git describe --tags --abbrev=0 --match 'v*')
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+  npm:
+    needs: version
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          cache: pnpm
+          cache-dependency-path: ts/pnpm-lock.yaml
+      - name: Skip when this version is already published
+        id: exists
+        run: |
+          if npm view "jaro@${{ needs.version.outputs.version }}" version >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.exists.outputs.skip != 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm typecheck
+          pnpm test
+          pnpm build
+          npm version "${{ needs.version.outputs.version }}" --no-git-tag-version
+          npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  python-sdist:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build pure Python wheel and sdist
+        run: |
+          sed -i 's/^version = ".*"/version = "${{ needs.version.outputs.version }}"/' py/pyproject.toml
+          pip install build
+          python -m build py --outdir dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-py
+          path: dist/*
+
+  native-wheels:
+    needs: version
+    strategy:
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: x86_64, manylinux: auto }
+          - { os: ubuntu-latest, target: aarch64, manylinux: auto }
+          - { os: macos-14, target: aarch64-apple-darwin, manylinux: "" }
+          - { os: macos-13, target: x86_64-apple-darwin, manylinux: "" }
+          - { os: windows-latest, target: x64, manylinux: "" }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stamp version
+        shell: bash
+        run: |
+          sed -i.bak 's/^version = ".*"/version = "${{ needs.version.outputs.version }}"/' native-py/pyproject.toml native-py/Cargo.toml
+          rm native-py/*.bak
+      - uses: PyO3/maturin-action@v1
+        with:
+          working-directory: native-py
+          target: ${{ matrix.target }}
+          manylinux: ${{ matrix.manylinux }}
+          args: --release --out dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-native-${{ matrix.os }}-${{ matrix.target }}
+          path: native-py/dist/*
+
+  native-sdist:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stamp version
+        run: sed -i 's/^version = ".*"/version = "${{ needs.version.outputs.version }}"/' native-py/pyproject.toml native-py/Cargo.toml
+      - uses: PyO3/maturin-action@v1
+        with:
+          working-directory: native-py
+          command: sdist
+          args: --out dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-native-sdist
+          path: native-py/dist/*
+
+  pypi:
+    needs: [python-sdist, native-wheels, native-sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true

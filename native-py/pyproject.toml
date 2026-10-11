@@ -1,0 +1,23 @@
+[build-system]
+requires = ["maturin==1.15.0"]
+build-backend = "maturin"
+
+[project]
+name = "jaro-native"
+version = "0.1.0"
+description = "Optional native (Rust, PyO3) decoder for the JARO binary format"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = []
+classifiers = ["Programming Language :: Rust", "Programming Language :: Python :: Implementation :: CPython"]
+
+[tool.maturin]
+module-name = "jaro_native"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://jaro.raczylo.com"
+Repository = "https://github.com/lukaszraczylo/jaro"

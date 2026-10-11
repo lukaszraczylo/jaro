@@ -1,0 +1,14 @@
+{
+  "name": "orders-api",
+  "version": 3,
+  "debug": false,
+  "owner": null,
+  "limits": {"rps": 250, "burst": 40, "timeout_s": 2.5},
+  "defaults": {"cpu": "500m", "memory": "512Mi", "region": "eu-west-1"},
+  "replicas": [
+    {"id": 1, "host": "node-a", "weight": 1.5, "healthy": true, "tags": ["blue", "ssd"], "cfg": {"cpu": "500m", "memory": "512Mi", "region": "eu-west-1"}},
+    {"id": 2, "host": "node-b", "weight": 1, "healthy": true, "tags": ["blue"], "cfg": {"cpu": "500m", "memory": "512Mi", "region": "eu-west-1"}},
+    {"id": 3, "host": "node-c", "weight": 0.5, "healthy": false, "tags": [], "cfg": {"cpu": "500m", "memory": "512Mi", "region": "eu-west-1"}}
+  ],
+  "note": "rolling update: 2 of 3 \"healthy\""
+}

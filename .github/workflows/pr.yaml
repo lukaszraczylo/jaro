@@ -1,0 +1,66 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ["**", "!main"]
+
+permissions:
+  contents: write
+  actions: write
+  pull-requests: write
+  security-events: write
+
+jobs:
+  go:
+    uses: lukaszraczylo/shared-actions/.github/workflows/go-pr.yaml@main
+    with:
+      go-version: ">=1.24"
+
+  typescript:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: ts/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Pure Python
+        working-directory: py
+        run: |
+          pip install -e '.[dev]'
+          mypy
+          pytest -q
+      - name: Native extension
+        working-directory: native-py
+        run: |
+          pip install maturin==1.15.0 pytest
+          maturin build --release --out dist
+          pip install dist/*.whl
+          pytest -q
+      - name: Pure Python with native accelerator
+        working-directory: py
+        run: pytest -q

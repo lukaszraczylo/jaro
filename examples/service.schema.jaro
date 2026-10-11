@@ -1,0 +1,9 @@
+# Schema for service.json (a schema is JARO too)
+name:"str(1..64)"
+version:int(1..)
+debug:bool
+owner:str?
+limits:{rps:int(1..) burst:int(0..) timeout_s:num(0..60)}
+defaults:{...:str}
+replicas:[{id:int(1..) host:str weight:num healthy:bool tags:[str] cfg:{...:str}} 1..16]
+note?:str

@@ -1,0 +1,15 @@
+{"kind":"protocol","metric":"geomean_ratio_vs_baseline","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"12 cells; per-cell min over 4 interleaved A/B runs vs concurrent base; trial kept if geomean improves >=1% and no cell regresses >3%","stop":{"trials":30,"no_improve":8}}
+{"id":"01","mutation":"baseline (after part 1 spec alignment)","metric":1.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text: quoted() indexOf for quote/backslash + cached next-backslash (geo 0.9888 but citm text +10.6%) [reverted: worst-cell rule]","metric":0.9888,"delta":0.0,"kept":"revert"}
+{"id":"03","mutation":"text: quoted() 32-char loop then indexOf path (geo 1.0100, github text +11%)","metric":1.01,"delta":0.01,"kept":"revert"}
+{"id":"04","mutation":"bin: T_OBJ skips dup check for keys repeating previous same-depth object's pool refs (geo 1.0133, worst cell +8.7%)","metric":1.0133,"delta":0.01330000000000009,"kept":"revert"}
+{"id":"05","mutation":"util: decodeUtf8 8-byte ASCII chunks below 48 bytes (geo 0.9223, worst cell +2.2%)","metric":0.9223,"delta":-0.07769999999999999,"kept":"KEEP"}
+{"id":"06","mutation":"bin: fillColumn for table/object-column/dense-sparse fill (geo 0.9978, worst cell +1.8%)","metric":0.9203,"delta":-0.0020000000000000018,"kept":"revert"}
+{"id":"07","mutation":"text: readRow sends numeric/quoted cells straight to token() (geo 0.996, worst cell +2.7%)","metric":0.9186,"delta":-0.0037000000000000366,"kept":"revert"}
+{"id":"08","mutation":"bin: n==2 float array starts as PACKED_DOUBLE literal (geo 0.9355, worst cell +1.9%)","metric":0.8628,"delta":-0.0595,"kept":"KEEP"}
+{"id":"09","mutation":"text: array starting with a float begins as PACKED_DOUBLE literal (geo 0.9872, worst cell +4.5%) [reverted: cell >3%]","metric":0.8518,"delta":-0.01100000000000001,"kept":"revert"}
+{"id":"10","mutation":"text: quoted() single loop with local position, unicodeEscape split out (geo 0.9868, worst cell +7.7%) [reverted: cell >3%]","metric":0.8514,"delta":-0.011399999999999966,"kept":"revert"}
+{"id":"11","mutation":"bin: varint 1- and 2-byte fast paths (geo 1.0031, worst cell +6.2%)","metric":0.8655,"delta":0.0027000000000000357,"kept":"revert"}
+{"id":"12","mutation":"util: strict manual UTF-8 decode for short non-ASCII strings (geo 1.0045, worst cell +2.4%)","metric":0.8667,"delta":0.0039000000000000146,"kept":"revert"}
+{"id":"13","mutation":"bin: decimal columns with scale>0 start as double-kind array (geo 0.9866, worst cell +2.5%) [reverted: gain was canada-bin bimodal artifact; other 11 cells flat/worse]","metric":0.8512,"delta":-0.011600000000000055,"kept":"revert"}
+{"id":"14","mutation":"text: direct token() dispatch for quoted/numeric values in arrays and objBody (geo 1.0172, worst cell +31.2%)","metric":0.8776,"delta":0.014800000000000035,"kept":"revert"}

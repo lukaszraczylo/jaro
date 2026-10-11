@@ -1,0 +1,9 @@
+{"kind":"protocol","metric":"sum_ns_per_op","direction":"lower","threshold":{"value":2.0,"relative":true},"budget":"300x x5 min","stop":{"trials":12,"no_improve":5}}
+{"id":"01","mutation":"baseline","metric":3118179.0,"delta":null,"kept":"base"}
+{"id":"02","mutation":"text intern table capped at 256 entries (low-cardinality strings only)","metric":3077352.0,"delta":-40827.0,"kept":"revert"}
+{"id":"03","mutation":"tableRows: initial row capacity 256","metric":3107464.0,"delta":-10715.0,"kept":"revert"}
+{"id":"04","mutation":"isDelim via 256-entry lookup table","metric":3002601.0,"delta":-115578.0,"kept":"KEEP"}
+{"id":"05","mutation":"token: scan bare run with local slice and index","metric":2941881.0,"delta":-60720.0,"kept":"KEEP"}
+{"id":"06","mutation":"atKey and ws: local slice and index","metric":2930573.0,"delta":-11308.0,"kept":"revert"}
+{"id":"07","mutation":"intern: stop adding once hit rate falls below half after 128 entries","metric":2949566.0,"delta":7685.0,"kept":"revert"}
+{"id":"08","mutation":"intern: presize table to 256","metric":2910224.0,"delta":-31657.0,"kept":"revert"}

@@ -1,0 +1,44 @@
+version: 2
+
+builds:
+  - id: jaro
+    main: ./cmd/jaro
+    binary: jaro
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w
+
+archives:
+  - id: jaro
+    formats: [tar.gz]
+    name_template: "jaro-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - LICENSE
+      - README.md
+      - SPEC.md
+
+checksum:
+  name_template: "jaro-checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^Merge'
+      - '^chore:'
+
+release:
+  github:
+    owner: lukaszraczylo
+    name: jaro
+  name_template: "v{{.Version}}"
+  prerelease: auto

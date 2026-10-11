@@ -1,0 +1,10 @@
+{"kind":"protocol","metric":"decode_ratio_geomean","direction":"lower","threshold":{"value":1.0,"relative":true},"budget":"12 cells JARO/json.loads interleaved, min of rounds; no cell >3% regress","stop":{"trials":50,"no_improve":12}}
+{"id":"01","mutation":"baseline (kept state)","metric":3.2037,"delta":null,"kept":"base"}
+{"id":"02","mutation":"T1 canada _float_rows: translate+json.loads validation instead of matrix regex (canada text 1.99->1.52)","metric":3.1192,"delta":-0.0844999999999998,"kept":"KEEP"}
+{"id":"03","mutation":"T2 scalar-object bulk (run regex + findall pairs + memo); no gain even on 39KB objects, regressed npm/github text","metric":3.1846,"delta":0.0653999999999999,"kept":"revert"}
+{"id":"04","mutation":"T3 whole-doc translate-then-json.loads: prototype timing only (no code kept): npm 16.0ms, citm 7.9, twitter 6.1 BEFORE json.loads/hooks/tables/headers vs scanner 18.4/15.4/7.7; dead end","metric":3.1192,"delta":0.0,"kept":"revert"}
+{"id":"05","mutation":"T5 binary T_OBJ inline small-int/short-str value (skip _value call); slower: npm bin +8.5%, twitter bin +10%","metric":3.1933,"delta":0.07409999999999961,"kept":"revert"}
+{"id":"06","mutation":"T6 binary T_OBJ inline 1-byte REF value; no gain (npm bin +2%, rest noise; machine load avg 5-8)","metric":3.1377,"delta":0.01849999999999996,"kept":"revert"}
+{"id":"07","mutation":"T7 table row regex: one match per row (k cells incl flat arrays/[]/{}), memoised cell tokens; disabled per table on first miss","metric":3.0814,"delta":-0.03780000000000028,"kept":"KEEP"}
+{"id":"08","mutation":"T8 whole-table-body regex + findall + dict(zip) bulk rows; paired A/B: github +2.9%, recipe +3.1%, others flat","metric":3.1028,"delta":0.021399999999999864,"kept":"revert"}
+{"id":"09","mutation":"T9 per-decoder bare-token memo dict replacing _bare_value calls at 6 sites; paired A/B only 0.3-1.6% (npm 0.984), below 1% geomean threshold","metric":3.07,"delta":-0.011400000000000077,"kept":"revert"}
