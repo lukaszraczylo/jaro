@@ -165,16 +165,27 @@ jobs:
           name: dist-native-sdist
           path: native-py/dist/*
 
+  # Trusted publishing: each project needs a publisher for this repository and workflow on pypi.org.
   pypi:
     needs: [python-sdist, native-wheels, native-sdist]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: dist-*
-          path: dist
+          name: dist-py
+          path: dist/jaro
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: dist-native-*
+          path: dist/jaro-native
           merge-multiple: true
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: dist/jaro
+          skip-existing: true
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/jaro-native
           skip-existing: true
