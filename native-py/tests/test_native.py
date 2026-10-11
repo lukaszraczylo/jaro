@@ -81,6 +81,8 @@ def test_accepts_bytearray_and_memoryview():
 
 
 def test_corpus(corpus_binaries):
+    if not corpus_binaries:
+        pytest.skip("no corpus directory")
     assert len(corpus_binaries) == 6
     for name, (blob, parsed) in corpus_binaries.items():
         got = native(blob)

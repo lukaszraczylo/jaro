@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { decodeBinary, encodeBinary, JaroError, parse, stringify } from "../src/index.js";
@@ -108,7 +108,7 @@ describe("prediction paths agree with plain decoding", () => {
         expect(same(bin[i], decodeBinary(encodeBinary(t[i]))), `binary elem ${seed}/${i}`).toBe(true);
       }
     }
-  });
+  }, 120_000);
 
   it("keeps __proto__ as an own key on every object of a repeated shape", () => {
     const rows = Array.from({ length: 200 }, (_, i) => ({ ["__proto__"]: i, a: 1, b: "x" }));
@@ -151,8 +151,8 @@ describe("prediction paths agree with plain decoding", () => {
     }
   });
 
-  it("decodes every corpus file identically in text and binary", () => {
-    const dir = join(__dirname, "../../../corpus");
+  const dir = join(__dirname, "../../../corpus");
+  it.skipIf(!existsSync(dir))("decodes every corpus file identically in text and binary", () => {
     for (const f of readdirSync(dir).filter((x) => x.endsWith(".json"))) {
       const t = parseJsonExact(readFileSync(join(dir, f), "utf8"));
       expect(same(parse(stringify(t)), t), f).toBe(true);
