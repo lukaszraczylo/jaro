@@ -1,3 +1,4 @@
-github.com/klauspost/compress v1.18.0/go.mod h1:2Pp+KzxcywXVXMr50+X0Q/Lsb43OQHYWRCY2AiWywWQ=
 github.com/klauspost/compress v1.18.7 h1:aUyZsS4kH3QTKurYhAOwAHxllVPnOthb3vPfnF1Ehjw=
 github.com/klauspost/compress v1.18.7/go.mod h1:cwPg85FWrGar70rWktvGQj8/hthj3wpl0PGDogxkrSQ=
+github.com/lukaszraczylo/jaro v0.1.1 h1:pFpeHnMXkvCOwi5XKFsh3N/duSfUuS9iVAqU5LEMbOk=
+github.com/lukaszraczylo/jaro v0.1.1/go.mod h1:ZT7umcEB1sWpylsKV2LCDbL4lgXSifvANeNelqz8P/c=
