@@ -3,6 +3,7 @@ name = "jaro_native"
 version = "0.1.0"
 edition = "2021"
 description = "Native JARO binary decoder (PyO3, abi3)"
+license = "MIT"
 publish = false
 
 [lib]

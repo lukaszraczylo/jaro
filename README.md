@@ -279,3 +279,7 @@ Text `Unmarshal` loses to go-json on every file, and `Parse` loses on `canada` a
 | npm_express | 1.37 ms | 1.70 ms | 1.11 ms | `Parse`, 1.2x faster |
 | recipe_book | 0.035 ms | 0.028 ms | 0.022 ms | `Parse`, 1.6x faster |
 | twitter | 0.66 ms | 0.54 ms | 0.58 ms | binary, 1.2x faster |
+
+## License
+
+MIT. See [LICENSE](LICENSE).

@@ -9,6 +9,7 @@ description = "JARO text and binary data format (pure Python)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
+license-files = ["LICENSE"]
 dependencies = []
 
 [project.optional-dependencies]
