@@ -82,7 +82,13 @@ func TestPlainNumbersMatchStrconv(t *testing.T) {
 			continue
 		}
 		want, err := strconv.ParseFloat(tok, 64)
-		if err != nil || want == 0 { // not a number, or zero (which decodes as the integer 0)
+		if err != nil { // not a number
+			continue
+		}
+		if i, ok := integral(want); ok { // whole numbers below 2^53 decode as ints
+			if got != i {
+				t.Errorf("%s: got %v (%T) want int %d", tok, got, got, i)
+			}
 			continue
 		}
 		if g, ok := got.(float64); !ok || math.Float64bits(g) != math.Float64bits(want) {

@@ -529,8 +529,8 @@ func (a *arenaDec) scalar(at int32) error {
 			}
 		}
 		if f, err := strconv.ParseFloat(tok, 64); err == nil && !math.IsInf(f, 0) {
-			if f == 0 { // match Unmarshal: zero is always an integer
-				nd.kind = KindInt
+			if i, ok := integral(f); ok { // match Unmarshal
+				nd.kind, nd.num = KindInt, i
 				return nil
 			}
 			nd.kind, nd.num = KindFloat, int64(math.Float64bits(f)) //nolint:gosec // bit pattern

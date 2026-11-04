@@ -306,10 +306,19 @@ func floatNum(f float64) (num, bool, error) {
 	if math.IsNaN(f) || math.IsInf(f, 0) {
 		return num{}, true, errors.New("jaro: NaN/Inf not representable")
 	}
-	if f == math.Trunc(f) && math.Abs(f) < 1<<53 {
-		return num{i: int64(f), isInt: true}, true, nil
+	if i, ok := integral(f); ok {
+		return num{i: i, isInt: true}, true, nil
 	}
 	return num{f: f}, true, nil
+}
+
+// integral reports whether f is a whole number below 2^53, which the data
+// model stores as an int.
+func integral(f float64) (int64, bool) {
+	if f == math.Trunc(f) && math.Abs(f) < maxExact {
+		return int64(f), true
+	}
+	return 0, false
 }
 
 // appendSortedKeys appends the sorted keys of m to dst.
@@ -639,8 +648,8 @@ func (d *textDec) token() (any, error) {
 			}
 		}
 		if f, err := strconv.ParseFloat(tok, 64); err == nil && !math.IsInf(f, 0) {
-			if f == 0 {
-				return int64(0), nil
+			if i, ok := integral(f); ok {
+				return d.box.int(i), nil
 			}
 			return d.box.float(f), nil
 		}
@@ -867,7 +876,8 @@ func (d *textDec) fastScalar(b []byte) (any, bool) {
 // fastNum decodes plain decimal ints of up to 18 digits and plain decimals
 // (digits '.' digits, at most 15 digits in all). Decimals use the exact
 // mantissa/10^k path, which is correctly rounded because mantissa < 2^53 and
-// k <= 22. A decimal that is zero is the integer 0, like the encoder writes it.
+// k <= 22. A decimal whose mantissa is divisible by 10^k is an integer, like
+// the encoder writes it; the test is exact integer arithmetic.
 func fastNum(b []byte) (i int64, f float64, isInt, ok bool) {
 	p, neg := 0, false
 	if b[0] == '-' {
@@ -900,10 +910,14 @@ func fastNum(b []byte) (i int64, f float64, isInt, ok bool) {
 	if k == 0 || digits > 15 {
 		return 0, 0, false, false
 	}
-	f = float64(v) / pow10[k]
-	if f == 0 {
-		return 0, 0, true, true
+	if v%pow10Int[k] == 0 {
+		v /= pow10Int[k]
+		if neg {
+			v = -v
+		}
+		return v, 0, true, true
 	}
+	f = float64(v) / pow10[k]
 	if neg {
 		f = -f
 	}

@@ -510,9 +510,9 @@ func TestFastDecimalMatchesParseFloat(t *testing.T) {
 			}
 			continue
 		}
-		if want == 0 { // zero (including -0) normalises to the integer 0
-			if v.(map[string]any)["x"] != int64(0) {
-				t.Errorf("%s: want int 0, got %v (%T)", tok, v.(map[string]any)["x"], v.(map[string]any)["x"])
+		if i, ok := integral(want); ok { // whole numbers below 2^53 (including -0) are ints
+			if v.(map[string]any)["x"] != i {
+				t.Errorf("%s: want int %d, got %v (%T)", tok, i, v.(map[string]any)["x"], v.(map[string]any)["x"])
 			}
 			continue
 		}
