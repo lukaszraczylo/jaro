@@ -1,7 +1,10 @@
 package jaro
 
 import (
+	"bytes"
 	"errors"
+	"hash/maphash"
+	"reflect"
 	"sync"
 )
 
@@ -28,29 +31,99 @@ func (o Options) minDedup() int {
 // dedup holds the anchor plan. Its traversal mirrors the encoder's emission
 // order so the first emitted copy of a repeated sub-tree is the definition.
 type dedup struct {
-	counts map[string]int
-	names  map[string]uint64
-	min    int
-	col    bool
+	counts  map[sig]int
+	names   map[sig]uint64
+	keys    map[nodeID]dedupKey
+	first   map[sig]any // first container seen per signature, to verify matches
+	scratch []byte
+	check   []byte
+	min     int
+	col     bool
+}
+
+// sig is a 128-bit hash of a container's text plus its length. Equal
+// signatures are verified against the stored first container, so a hash
+// collision can only lose a dedup, never merge unequal values.
+type sig struct {
+	a, b uint64
+	n    int
+}
+
+var sigSeedA, sigSeedB = maphash.MakeSeed(), maphash.MakeSeed()
+
+// nodeID identifies a container by address and length. The tree is not
+// mutated while the plan is built, so the key of a node never changes.
+type nodeID struct {
+	ptr uintptr
+	n   int
+}
+
+type dedupKey struct {
+	s  sig
+	ok bool
 }
 
 func newDedup(v any, min int, columnMajor bool) *dedup {
-	d := &dedup{min: min, col: columnMajor, counts: map[string]int{}, names: map[string]uint64{}}
+	d := &dedup{
+		min: min, col: columnMajor,
+		counts: map[sig]int{}, names: map[sig]uint64{},
+		keys: map[nodeID]dedupKey{}, first: map[sig]any{},
+	}
 	d.visit(v)
 	return d
 }
 
-func (d *dedup) key(v any) (string, bool) {
-	switch v.(type) {
-	case map[string]any, []any:
+// key returns the signature of container v when its text is at least d.min
+// bytes. It serialises each container once; visit and ref share the result.
+func (d *dedup) key(v any) (sig, bool) {
+	var id nodeID
+	switch x := v.(type) {
+	case map[string]any:
+		id = nodeID{reflect.ValueOf(x).Pointer(), len(x)}
+	case []any:
+		if len(x) == 0 {
+			return d.build(v)
+		}
+		id = nodeID{reflect.ValueOf(x).Pointer(), len(x)}
 	default:
-		return "", false
+		return sig{}, false
 	}
-	b, err := Marshal(v)
-	if err != nil || len(b) < d.min {
-		return "", false
+	if k, hit := d.keys[id]; hit {
+		return k.s, k.ok
 	}
-	return string(b), true
+	s, ok := d.build(v)
+	d.keys[id] = dedupKey{s, ok}
+	return s, ok
+}
+
+func (d *dedup) text(buf []byte, v any) ([]byte, bool) {
+	e := textEnc{buf: buf[:0]}
+	var err error
+	if m, ok := v.(map[string]any); ok && len(m) > 0 {
+		err = e.objBody(m, 1)
+	} else {
+		err = e.value(v, 0)
+	}
+	return e.buf, err == nil
+}
+
+func (d *dedup) build(v any) (sig, bool) {
+	var ok bool
+	d.scratch, ok = d.text(d.scratch, v)
+	if !ok || len(d.scratch) < d.min {
+		return sig{}, false
+	}
+	s := sig{maphash.Bytes(sigSeedA, d.scratch), maphash.Bytes(sigSeedB, d.scratch), len(d.scratch)}
+	rep, seen := d.first[s]
+	if !seen {
+		d.first[s] = v
+		return s, true
+	}
+	d.check, ok = d.text(d.check, rep)
+	if !ok || !bytes.Equal(d.check, d.scratch) {
+		return sig{}, false
+	}
+	return s, true
 }
 
 func (d *dedup) visit(v any) {
