@@ -189,9 +189,9 @@ A schema is JARO data; see README. Type strings: `any str int num bool null enum
 | events (2000 rows, nested) | JSON | 198,687 | 100% | 914 µs | 2630 µs |
 | | JARO text | 111,374 | 64% | 520 µs | 778 µs |
 | | JARO binary | 17,532 | n/a | 263 µs | 391 µs |
-| config (40 similar services) | JSON | 9,113 | 100% | 37 µs | 116 µs |
-| | JARO text + dedup | 1,297 | 26% | 184 µs | 30 µs |
-| | JARO binary + dedup | 964 | n/a | 193 µs | 20 µs |
+| config (40 similar services) | JSON | 9,113 | 100% | 36 µs | 106 µs |
+| | JARO text + dedup | 2,495 | 47% | 67 µs | 24 µs |
+| | JARO binary + dedup | 966 | n/a | 55 µs | 18 µs |
 
 Compressed sizes (bytes, gzip level 6 / zstd default):
 
@@ -220,6 +220,24 @@ Compression already removes most of JSON's repeated keys, so JARO text saves onl
 A second pass (`experiments-allocs2.jsonl`) cut allocations from 35,757 to 32,449 (-9%): decoders slice strings from a single copy of the input, and the first occurrence of an interned string is boxed once. Strings decoded this way keep that copy of the input alive for as long as they are referenced. Seven further small ideas (capacity hints, a larger integer table, direct key reads and similar) each saved under 0.5% and were reverted. About 70% of what remains is the two allocations per decoded row map, and about 17% is boxing of floats and large integers.
 
 A speed pass (`experiments-speed.jsonl`) kept two of five trials: a 256-entry lookup table for bare-token delimiters and a local slice in the token scan. Together they cut total time by 5.7% (3,118,179 to 2,941,881 ns). A CPU profile of a 1000-user text decode shows about 13% of samples in decoding. The rest is runtime scheduling and memory release (`kevent`, `madvise`), so bytes allocated now limit speed more than parsing does.
+
+### Dedup planning
+
+`Options{Dedup: true}` used to serialise every container to find repeats. A container nested `d` levels deep was serialised `d` times, and the planner kept all of that text as map keys. A chain of `n` nested containers cost `n(n+1)/2` units of work.
+
+The planner now gives equal sub-trees one class id in a single bottom-up pass. A hash hit is checked against the stored signature, so two different sub-trees never share a class. Only classes that occur twice are serialised, and only up to `MinDedup` bytes. Planner state is pooled between calls.
+
+The output is byte for byte identical to the previous planner on five corpus files and on random trees, which `TestDedupPlanMatchesTextKeys` checks. Encode time with dedup at the default `MinDedup` (text / binary, best of 15 on one machine):
+
+| File | Before | After |
+|---|---:|---:|
+| canada | 79.0 / 80.8 ms | 11.1 / 7.7 ms |
+| twitter | 10.2 / 12.0 ms | 2.2 / 2.3 ms |
+| npm_express | 20.9 / 26.9 ms | 5.2 / 4.9 ms |
+| citm_catalog | 7.0 / 8.4 ms | 2.3 / 2.2 ms |
+| github_issues | 6.8 / 6.1 ms | 2.0 / 1.5 ms |
+
+Allocated bytes per encode fell by 92% to 98% (canada: 172 MB to 13 MB). Encoding with dedup is still about 2.4 times slower than without it on `canada` (11.1 ms against 4.7 ms).
 
 ### Build tag `jaro_unsafe`
 
