@@ -44,7 +44,9 @@ func MarshalBinaryOpts(v any, o Options) ([]byte, error) {
 	e := &binEnc{buf: getBuf(), pool: getPool()}
 	defer func() { putBuf(e.buf); putPool(e.pool) }()
 	if o.Dedup {
-		e.dd = newDedup(v, o.minDedup(), true)
+		dd := newDedup(v, o.minDedup(), true)
+		defer dd.release()
+		e.dd = dd
 	}
 	e.buf = append(e.buf, binMagic, binVersion)
 	if err := e.value(v, 0); err != nil {
@@ -55,7 +57,7 @@ func MarshalBinaryOpts(v any, o Options) ([]byte, error) {
 
 type binEnc struct {
 	pool map[string]uint64
-	dd   *dedup
+	dd   planner
 	buf  []byte
 	ks   []string // scratch stack of sorted object keys
 }

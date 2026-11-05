@@ -35,7 +35,9 @@ func MarshalOpts(v any, o Options) ([]byte, error) {
 	e := &textEnc{buf: getBuf()}
 	defer func() { putBuf(e.buf) }()
 	if o.Dedup {
-		e.dd = newDedup(v, o.minDedup(), false)
+		dd := newDedup(v, o.minDedup(), false)
+		defer dd.release()
+		e.dd = dd
 	}
 	if m, ok := v.(map[string]any); ok && len(m) > 0 {
 		if err := e.objBody(m, 1); err != nil {
@@ -50,14 +52,21 @@ func MarshalOpts(v any, o Options) ([]byte, error) {
 }
 
 type textEnc struct {
-	dd  *dedup
-	buf []byte
-	ks  []string // scratch stack of sorted object keys
+	dd    planner
+	buf   []byte
+	ks    []string // scratch stack of sorted object keys
+	limit int      // when > 0, stop with errEnough once buf holds limit bytes
 }
+
+// errEnough ends a size probe early; it is not a failure.
+var errEnough = errors.New("jaro: size limit reached")
 
 func (e *textEnc) value(v any, depth int) error {
 	if depth > maxDepth {
 		return errors.New("jaro: nesting too deep")
+	}
+	if e.limit > 0 && len(e.buf) >= e.limit {
+		return errEnough
 	}
 	if e.dd != nil {
 		if idx, use, def := e.dd.ref(v); use {
