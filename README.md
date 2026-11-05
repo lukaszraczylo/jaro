@@ -46,7 +46,7 @@ users:[|id name tags| 1 ann [a b] 2 "bob smith" []]
 
 Delimiters that force quoting: whitespace, `" { } [ ] | : \ #`; a leading `&` or `*`.
 
-The encoder emits anchors on request (`Options{Dedup: true}`): repeated sub-trees of at least 24 bytes become `&a0` / `*a0`. Decoders cap reference expansion at 2^24 nodes, so a reference bomb returns an error.
+The encoder emits anchors on request (`Options{Dedup: true}`): repeated sub-trees of at least 8 bytes, and repeated strings that cost more than two LLM tokens, become `&0 value` / `*0`. Decoders cap reference expansion at 2^24 nodes, so a reference bomb returns an error.
 
 ## Binary syntax
 
@@ -128,6 +128,7 @@ scalar   = "~" | "true" | "false" | number | bare | quoted
 
 - `bare` is any run of bytes that contains no delimiter. Delimiters: whitespace, `" { } [ ] | : \ #`. A bare token that parses as a number is a number; `~`, `true`, `false` are reserved; a leading `&` or `*` is reserved; `^` alone is reserved inside tables.
 - `number` is decimal: `-`? digits (`.` digits?)? or `-`? `.` digits, then an optional exponent (`e` or `E`, optional sign, digits). Int64 when it parses as one, otherwise float64. Any other token, including `1_000`, `0x10`, `+5`, `1e`, `Inf` and `NaN`, is a string. Encoders write floats in the shortest form that round-trips in the form of Go `strconv.FormatFloat(f, 'g', -1, 64)`: an exponent such as `1.2345675e+06` when the decimal exponent is below -4 or at least 6, and plain digits otherwise, and quote strings that start like a number.
+- An anchor name is a run of bytes that contains no delimiter, so `&0 value` and `*0` are valid. An anchor can hold any value, including a string or a number, and `*name` inserts a copy of it. Encoders write decimal names and anchor repeated sub-trees and repeated strings.
 - `quoted` escapes: `\" \\ \n \r \t \uXXXX` with exactly four hex digits. A high surrogate must be followed by `\uXXXX` with a low surrogate and the pair is one code point. A lone surrogate is an error. Encoders quote any string that is empty, reserved, number-like, starts with `&` or `*`, or contains a delimiter.
 - Encoders emit a table for an array of 2 or more objects with identical, non-empty key sets, with keys sorted.
 - Encoders also emit a table when the objects differ in keys, if at least half of the cells would be present. The header lists the union of keys and each missing key becomes the bare cell `^`. A decoder omits that key from the row. A string equal to `^` is quoted.
@@ -190,8 +191,8 @@ A schema is JARO data; see README. Type strings: `any str int num bool null enum
 | | JARO text | 111,374 | 64% | 520 µs | 778 µs |
 | | JARO binary | 17,532 | n/a | 263 µs | 391 µs |
 | config (40 similar services) | JSON | 9,113 | 100% | 36 µs | 106 µs |
-| | JARO text + dedup | 2,495 | 47% | 67 µs | 24 µs |
-| | JARO binary + dedup | 966 | n/a | 55 µs | 18 µs |
+| | JARO text + dedup | 1,765 | 36% | 82 µs | 22 µs |
+| | JARO binary + dedup | 966 | n/a | 56 µs | 20 µs |
 
 Compressed sizes (bytes, gzip level 6 / zstd default):
 
@@ -238,6 +239,27 @@ The output is byte for byte identical to the previous planner on five corpus fil
 | github_issues | 6.8 / 6.1 ms | 2.0 / 1.5 ms |
 
 Allocated bytes per encode fell by 92% to 98% (canada: 172 MB to 13 MB). Encoding with dedup is still about 2.4 times slower than without it on `canada` (11.1 ms against 4.7 ms).
+
+### Token passes
+
+LLM tokens are the cost that matters for text, so the planner now counts tokens, not bytes. Four changes ship, all inside text v1, and the Go, TypeScript and Python decoders read every output:
+
+- Anchor names are decimal indexes (`&0`, `*0`) instead of `a0`. A reference is two tokens instead of three.
+- With `Dedup`, repeated strings become anchors when `(n-1)(c-2) > 2`, where `n` is the number of copies and `c` the estimated token cost of one. A version string such as `0.1.0` costs six tokens (digits and dots split), so it pays from two copies on. A one-token word such as `latest` never pays.
+- The planner walks tables the way the encoder writes them. It used to count row objects that the encoder never writes, so some anchors were defined and never used, and strings in nested columns were counted once.
+- `MinDedup` defaults to 8 bytes instead of 24. Two-digit anchor indexes still pay from 8 bytes.
+
+Tokens of the compact text with `Dedup: true`, as a share of compact JSON (`o200k_base`, five files):
+
+| File | No dedup | Before | After |
+|---|---:|---:|---:|
+| canada | 100.0% | 99.5% | 99.3% |
+| citm_catalog | 55.7% | 13.6% | 11.3% |
+| github_issues | 84.2% | 68.9% | 61.0% |
+| npm_express | 86.5% | 60.7% | 43.9% |
+| twitter | 75.1% | 46.6% | 35.6% |
+
+`Dedup` is off by default, so plain output is unchanged. The cost estimate agrees with `o200k_base` on 97.5% of pay or no-pay decisions for the repeated strings in this corpus. It is an estimate: another tokenizer can differ. Dedup encoding of a small config is about 15 µs slower, and `canada` and `npm_express` about 10% slower.
 
 ### Build tag `jaro_unsafe`
 
