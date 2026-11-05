@@ -112,16 +112,25 @@ class TextEnc {
       const r = this.dd.ref(v);
       if (r !== null) {
         if (r.use) {
-          this.out += "*a" + r.idx;
+          this.out += "*" + r.idx;
           return;
         }
-        this.out += "&a" + r.idx + " ";
+        this.out += "&" + r.idx + " ";
       }
     }
     if (v === null) this.out += "~";
     else if (typeof v === "boolean") this.out += v ? "true" : "false";
-    else if (typeof v === "string") this.str(v);
-    else if (Array.isArray(v)) this.array(v, depth);
+    else if (typeof v === "string") {
+      const r = this.dd === null ? null : this.dd.refStr(v);
+      if (r !== null) {
+        if (r.use) {
+          this.out += "*" + r.idx;
+          return;
+        }
+        this.out += "&" + r.idx + " ";
+      }
+      this.str(v);
+    } else if (Array.isArray(v)) this.array(v, depth);
     else if (isObj(v)) {
       const specs = keyedSpecs(v);
       if (specs !== null) return this.keyedTable(v, specs, depth);
@@ -209,7 +218,7 @@ export function plainText(v: unknown): string {
 
 /** Encodes a value as JARO text. Throws JaroError for unsupported input. */
 export function stringify(value: unknown, opts: EncodeOptions = {}): string {
-  const dd = opts.dedup === true ? new Dedup(value, opts.minDedup ?? DEFAULT_MIN_DEDUP, false, plainText) : null;
+  const dd = opts.dedup === true ? new Dedup(value, opts.minDedup ?? DEFAULT_MIN_DEDUP, false, plainText, needsQuote) : null;
   const e = new TextEnc(dd);
   if (isObj(value) && Object.keys(value).length > 0) e.objBody(value, 0);
   else e.value(value, 0);

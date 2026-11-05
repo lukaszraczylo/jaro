@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultMinDedup = 24
+	defaultMinDedup = 8
 	maxExpand       = 1 << 24 // nodes a decoder may materialise through references
 )
 
@@ -21,6 +21,7 @@ type Options struct {
 	// Dedup replaces repeated sub-trees with anchors and back-references.
 	Dedup bool
 	// MinDedup is the smallest sub-tree (in text bytes) worth anchoring.
+	// Strings are anchored by their estimated token cost instead.
 	MinDedup int
 }
 
@@ -39,26 +40,30 @@ func (o Options) minDedup() int {
 // only up to min bytes, when it occurs at least twice.
 // lean4/Jaro/DedupPlan.lean models this planner.
 type dedup struct {
-	ids    map[nodeID]uint32 // container -> class
-	byHash map[uint64]uint32 // signature hash -> newest class+1 with that hash
-	strs   map[string]uint32 // sanitised string -> id
-	cls    []class
-	sigs   []elem // signature arena
-	stk    []elem // scratch: child elements of the containers being walked
-	ks     []string
-	vks    []string // scratch for visit
-	counts []int32  // per class: times counted by visit
-	names  []int32  // per class: anchor index+1
-	enc    textEnc
-	nnames uint64
-	poison uint64
-	min    int
-	col    bool
+	strN       map[string]int32
+	byHash     map[uint64]uint32
+	strs       map[string]uint32
+	strIdx     map[string]uint64
+	ids        map[nodeID]uint32
+	sigs       []elem
+	ks         []string
+	vks        []string
+	counts     []int32
+	names      []int32
+	stk        []elem
+	cls        []class
+	enc        textEnc
+	nnames     uint64
+	poison     uint64
+	min        int
+	anchorStrs bool
+	col        bool
 }
 
 // planner decides, per container at emission time, where anchors go.
 type planner interface {
 	ref(v any) (idx uint64, use, def bool)
+	refStr(s string) (idx uint64, use, def bool)
 }
 
 // nodeID identifies a container by address and length. The tree is not
@@ -101,7 +106,10 @@ const (
 const sigMix = 0x9E3779B97F4A7C15
 
 var dedupPool = sync.Pool{New: func() any {
-	return &dedup{ids: map[nodeID]uint32{}, byHash: map[uint64]uint32{}, strs: map[string]uint32{}}
+	return &dedup{
+		ids: map[nodeID]uint32{}, byHash: map[uint64]uint32{}, strs: map[string]uint32{},
+		strN: map[string]int32{}, strIdx: map[string]uint64{},
+	}
 }}
 
 // maxPooledClasses keeps one huge document from pinning memory in the pool.
@@ -110,7 +118,7 @@ const maxPooledClasses = 1 << 18
 // newDedup plans the anchors of v. Call release when the encoder is done.
 func newDedup(v any, min int, columnMajor bool) *dedup {
 	d := dedupPool.Get().(*dedup)
-	d.min, d.col = min, columnMajor
+	d.min, d.col, d.anchorStrs = min, columnMajor, !columnMajor
 	d.walk(v)
 	n := len(d.cls)
 	d.counts = slices.Grow(d.counts[:0], n)[:n]
@@ -129,6 +137,8 @@ func (d *dedup) release() {
 	clear(d.ids)
 	clear(d.byHash)
 	clear(d.strs)
+	clear(d.strN)
+	clear(d.strIdx)
 	clear(d.cls)
 	d.cls, d.sigs, d.stk, d.ks, d.vks = d.cls[:0], d.sigs[:0], d.stk[:0], d.ks[:0], d.vks[:0]
 	clear(d.enc.ks)
@@ -299,7 +309,85 @@ func (d *dedup) longEnough(v any) bool {
 	return len(e.buf) >= d.min && (err == nil || err == errEnough)
 }
 
+// Anchoring a string replaces each later copy (c tokens) with a reference of two
+// tokens and adds a definition of two tokens (` &`, index). It pays when
+// (n-1)(c-2) > 2: Jaro.Dedup.tok_pays_iff in lean4/.
+const (
+	minAnchorStr = 3 // shorter strings cost under 3 tokens even when quoted
+	refTokens    = 2
+	defTokens    = 2
+)
+
+// tokCost estimates the LLM tokens of s as the text encoder writes it, for
+// o200k_base: an ASCII word costs a token per 6 letters, digits a token per 3,
+// other characters one each, and a quoted string two more for its quotes.
+func tokCost(s string) int {
+	c := 1
+	if needsQuote(s) {
+		c++
+	}
+	for i := 0; i < len(s); {
+		b := s[i]
+		switch {
+		case b >= utf8.RuneSelf:
+			_, n := utf8.DecodeRuneInString(s[i:])
+			c++
+			i += n
+		case b >= '0' && b <= '9':
+			j := i
+			for j < len(s) && s[j] >= '0' && s[j] <= '9' {
+				j++
+			}
+			c += (j - i + 2) / 3
+			i = j
+		case b|0x20 >= 'a' && b|0x20 <= 'z':
+			j := i
+			for j < len(s) && s[j]|0x20 >= 'a' && s[j]|0x20 <= 'z' {
+				j++
+			}
+			c += (j - i + 5) / 6
+			i = j
+		default:
+			c++
+			i++
+		}
+	}
+	return c
+}
+
+func sanitized(s string) string {
+	if !utf8.ValidString(s) {
+		return strings.ToValidUTF8(s, "\uFFFD")
+	}
+	return s
+}
+
+// refStr is called once per string value at emission time, like ref.
+func (d *dedup) refStr(s string) (idx uint64, use, def bool) {
+	if !d.anchorStrs || len(s) < minAnchorStr {
+		return 0, false, false
+	}
+	k := sanitized(s)
+	n := int(d.strN[k])
+	if n < 2 || (n-1)*(tokCost(k)-refTokens) <= defTokens {
+		return 0, false, false
+	}
+	if i, seen := d.strIdx[k]; seen {
+		return i, true, false
+	}
+	i := d.nnames
+	d.nnames++
+	d.strIdx[k] = i
+	return i, false, true
+}
+
 func (d *dedup) visit(v any) {
+	if s, ok := v.(string); ok {
+		if d.anchorStrs && len(s) >= minAnchorStr {
+			d.strN[sanitized(s)]++
+		}
+		return
+	}
 	if c, ok := d.counted(v); ok {
 		d.counts[c]++
 		if d.counts[c] > 1 {
@@ -308,6 +396,17 @@ func (d *dedup) visit(v any) {
 	}
 	switch x := v.(type) {
 	case map[string]any:
+		if !d.col {
+			if specs, ok := keyedSpecs(x); ok { // the text encoder writes row cells, not row objects
+				base := len(d.vks)
+				d.vks = appendSortedKeys(d.vks, x)
+				for _, name := range d.vks[base:] {
+					d.visitCells(specs, x[name].(map[string]any))
+				}
+				d.vks = d.vks[:base]
+				return
+			}
+		}
 		base := len(d.vks)
 		d.vks = appendSortedKeys(d.vks, x)
 		for _, k := range d.vks[base:] {
@@ -315,6 +414,14 @@ func (d *dedup) visit(v any) {
 		}
 		d.vks = d.vks[:base]
 	case []any:
+		if !d.col {
+			if specs, ok := tableSpecs(x); ok {
+				for _, r := range x {
+					d.visitCells(specs, r.(map[string]any))
+				}
+				return
+			}
+		}
 		cols, ok := tableKeys(x)
 		switch {
 		case !ok:
@@ -333,6 +440,19 @@ func (d *dedup) visit(v any) {
 					d.visit(row.(map[string]any)[c])
 				}
 			}
+		}
+	}
+}
+
+// visitCells visits the cells of one table row in the order specCells writes them.
+func (d *dedup) visitCells(specs []colSpec, row map[string]any) {
+	for _, s := range specs {
+		v, present := row[s.key]
+		switch {
+		case s.sub != nil:
+			d.visitCells(s.sub, v.(map[string]any))
+		case present:
+			d.visit(v)
 		}
 	}
 }

@@ -134,7 +134,7 @@ describe("generator coverage", () => {
       if (t.includes(" ^")) text.sparse++;
       if (t.includes("{|")) text.keyed++;
       if (/\|[^|]*\{/.test(t)) text.nested++;
-      if (stringify(v, { dedup: true }).includes("&a0")) text.anchor++;
+      if (stringify(v, { dedup: true }).includes("&0 ")) text.anchor++;
       const b = encodeBinary(v);
       for (const tag of [0x09, 0x0c, 0x0d]) if (b.includes(tag)) tags.add(tag);
     }

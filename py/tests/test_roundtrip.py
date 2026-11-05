@@ -158,5 +158,5 @@ def test_dedup_shrinks_repeated_subtrees() -> None:
     sub = {"name": "repeated sub-tree", "tags": ["a", "b", "c"], "n": 12345}
     t = {"a": sub, "b": sub, "c": sub}
     assert len(jaro.dumps(t, dedup=True)) < len(jaro.dumps(t))
-    assert "&a0" in jaro.dumps(t, dedup=True)
+    assert "&0 " in jaro.dumps(t, dedup=True)
     assert len(jaro.dumps_binary(t, dedup=True)) < len(jaro.dumps_binary(t))

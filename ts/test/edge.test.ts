@@ -237,8 +237,8 @@ describe("dedup", () => {
     const big = { host: "db.internal", port: 5432, user: "app", tags: ["a", "b"] };
     const v = { x: big, y: structuredClone(big), z: [structuredClone(big)] };
     const t = stringify(v, { dedup: true });
-    expect(t).toContain("&a0");
-    expect(t).toContain("*a0");
+    expect(t).toContain("&0 ");
+    expect(t).toContain("*0");
     expect(same(parse(t), v)).toBe(true);
     const b = encodeBinary(v, { dedup: true });
     expect(b.length).toBeLessThan(encodeBinary(v).length);

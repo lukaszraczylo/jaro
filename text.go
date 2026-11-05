@@ -70,11 +70,11 @@ func (e *textEnc) value(v any, depth int) error {
 	}
 	if e.dd != nil {
 		if idx, use, def := e.dd.ref(v); use {
-			e.buf = append(e.buf, '*', 'a')
+			e.buf = append(e.buf, '*')
 			e.buf = strconv.AppendUint(e.buf, idx, 10)
 			return nil
 		} else if def {
-			e.buf = append(e.buf, '&', 'a')
+			e.buf = append(e.buf, '&')
 			e.buf = strconv.AppendUint(e.buf, idx, 10)
 			e.buf = append(e.buf, ' ')
 		}
@@ -89,6 +89,17 @@ func (e *textEnc) value(v any, depth int) error {
 			e.buf = append(e.buf, "false"...)
 		}
 	case string:
+		if e.dd != nil {
+			if idx, use, def := e.dd.refStr(x); use {
+				e.buf = append(e.buf, '*')
+				e.buf = strconv.AppendUint(e.buf, idx, 10)
+				return nil
+			} else if def {
+				e.buf = append(e.buf, '&')
+				e.buf = strconv.AppendUint(e.buf, idx, 10)
+				e.buf = append(e.buf, ' ')
+			}
+		}
 		e.str(x)
 	case map[string]any:
 		if specs, ok := keyedSpecs(x); ok {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
+	"reflect"
 	"testing"
 )
 
@@ -12,12 +13,18 @@ import (
 type textPlan struct {
 	counts map[string]int
 	names  map[string]uint64
+	strN   map[string]int
+	strIdx map[string]uint64
+	next   uint64
 	min    int
 	col    bool
 }
 
 func newTextPlan(v any, min int, col bool) *textPlan {
-	p := &textPlan{counts: map[string]int{}, names: map[string]uint64{}, min: min, col: col}
+	p := &textPlan{
+		counts: map[string]int{}, names: map[string]uint64{},
+		strN: map[string]int{}, strIdx: map[string]uint64{}, min: min, col: col,
+	}
 	p.visit(v)
 	return p
 }
@@ -36,6 +43,12 @@ func (p *textPlan) key(v any) (string, bool) {
 }
 
 func (p *textPlan) visit(v any) {
+	if s, ok := v.(string); ok {
+		if !p.col && len(s) >= minAnchorStr {
+			p.strN[sanitized(s)]++
+		}
+		return
+	}
 	if k, ok := p.key(v); ok {
 		p.counts[k]++
 		if p.counts[k] > 1 {
@@ -44,10 +57,26 @@ func (p *textPlan) visit(v any) {
 	}
 	switch x := v.(type) {
 	case map[string]any:
+		if !p.col {
+			if specs, ok := keyedSpecs(x); ok {
+				for _, name := range sortedKeys(x) {
+					p.visitCells(specs, x[name].(map[string]any))
+				}
+				return
+			}
+		}
 		for _, k := range sortedKeys(x) {
 			p.visit(x[k])
 		}
 	case []any:
+		if !p.col {
+			if specs, ok := tableSpecs(x); ok {
+				for _, r := range x {
+					p.visitCells(specs, r.(map[string]any))
+				}
+				return
+			}
+		}
 		cols, ok := tableKeys(x)
 		switch {
 		case !ok:
@@ -70,6 +99,18 @@ func (p *textPlan) visit(v any) {
 	}
 }
 
+func (p *textPlan) visitCells(specs []colSpec, row map[string]any) {
+	for _, s := range specs {
+		v, present := row[s.key]
+		switch {
+		case s.sub != nil:
+			p.visitCells(s.sub, v.(map[string]any))
+		case present:
+			p.visit(v)
+		}
+	}
+}
+
 func (p *textPlan) ref(v any) (idx uint64, use, def bool) {
 	k, ok := p.key(v)
 	if !ok || p.counts[k] < 2 {
@@ -78,8 +119,27 @@ func (p *textPlan) ref(v any) (idx uint64, use, def bool) {
 	if i, seen := p.names[k]; seen {
 		return i, true, false
 	}
-	i := uint64(len(p.names))
+	i := p.next
+	p.next++
 	p.names[k] = i
+	return i, false, true
+}
+
+func (p *textPlan) refStr(s string) (idx uint64, use, def bool) {
+	if p.col || len(s) < minAnchorStr {
+		return 0, false, false
+	}
+	k := sanitized(s)
+	n := p.strN[k]
+	if n < 2 || (n-1)*(tokCost(k)-refTokens) <= defTokens {
+		return 0, false, false
+	}
+	if i, seen := p.strIdx[k]; seen {
+		return i, true, false
+	}
+	i := p.next
+	p.next++
+	p.strIdx[k] = i
 	return i, false, true
 }
 
@@ -194,5 +254,62 @@ func TestDedupPlannerPoolIsRaceFree(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestDedupAnchorsOnlyStringsThatPay(t *testing.T) {
+	cases := []struct {
+		name string
+		s    string
+		n    int
+		want bool
+	}{
+		{"version digits and dots", "0.1.0", 2, true},
+		{"long url", "https://api.github.com/repos/golang/go", 2, true},
+		{"quoted phrase", "blue item with spaces", 3, true},
+		{"single token word", "latest", 50, false},
+		{"short word", "ok", 50, false},
+		{"unrepeated", "0.1.0", 1, false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			rows := make([]any, c.n)
+			for i := range rows {
+				rows[i] = c.s
+			}
+			text, err := MarshalOpts(map[string]any{"v": rows}, Options{Dedup: true})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got := bytes.Contains(text, []byte("&0 ")); got != c.want {
+				t.Fatalf("anchored=%v want %v: %s", got, c.want, text)
+			}
+		})
+	}
+}
+
+// Dedup output must decode to the same value as plain output.
+func TestDedupRoundTripsLikePlain(t *testing.T) {
+	for seed := int64(1); seed <= 300; seed++ {
+		var pool []any
+		v := randTree(rand.New(rand.NewSource(seed)), 6, &pool) //nolint:gosec // seeded fixtures must repeat
+		plain, err := Marshal(v)
+		if err != nil {
+			continue
+		}
+		want, err := Unmarshal(plain)
+		if err != nil { // colliding invalid-UTF-8 keys write duplicate keys
+			continue
+		}
+		for _, min := range []int{1, 8, 24} {
+			dd, err := MarshalOpts(v, Options{Dedup: true, MinDedup: min})
+			if err != nil {
+				t.Fatalf("seed %d: %v", seed, err)
+			}
+			got, err := Unmarshal(dd)
+			if err != nil || !reflect.DeepEqual(got, want) {
+				t.Fatalf("seed %d min %d: dedup text decodes differently\n%s\n%s (%v)", seed, min, plain, dd, err)
+			}
+		}
 	}
 }

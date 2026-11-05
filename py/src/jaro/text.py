@@ -218,6 +218,13 @@ def _fast(x: Any) -> str | None:
     return None
 
 
+def _fast_int(x: Any) -> str | None:
+    """Like _fast, but leaves strings to the encoder so dedup can anchor them."""
+    if type(x) is int and INT64_MIN <= x <= INT64_MAX:
+        return str(x)
+    return None
+
+
 _FAST_TYPES = frozenset((type(None), bool, int, float, str, dict, list))
 
 
@@ -266,10 +273,18 @@ class _Encoder:
         if depth > MAX_DEPTH:
             raise JaroError("nesting too deep")
         out = self.out
+        fast = _fast if self.dd is None else _fast_int
         t = type(v)
         if t not in _FAST_TYPES:
             v, t = _coerce(v)
         if t is str:
+            if self.dd is not None:
+                sref = self.dd.ref_str(v)
+                if sref is not None:
+                    if sref[1]:
+                        out.append(f"*{sref[0]}")
+                        return
+                    out.append(f"&{sref[0]} ")
             out.append(_quote(v))
             return
         if t is int:
@@ -292,9 +307,9 @@ class _Encoder:
             ref = dd.ref(v)
             if ref is not None:
                 if ref[1]:
-                    out.append(f"*a{ref[0]}")
+                    out.append(f"*{ref[0]}")
                     return
-                out.append(f"&a{ref[0]} ")
+                out.append(f"&{ref[0]} ")
         table: list[ColSpec] | None = None
         names: list[str] | None = None
         rows: list[Any]
@@ -312,7 +327,7 @@ class _Encoder:
                     out.append(_quote(k))
                     out.append(":")
                     x = v[k]
-                    r = _fast(x) if depth < MAX_DEPTH else None
+                    r = fast(x) if depth < MAX_DEPTH else None
                     if r is None:
                         self._enc(x, depth + 1)
                     else:
@@ -331,7 +346,7 @@ class _Encoder:
                 for i, x in enumerate(v):
                     if i:
                         out.append(" ")
-                    r = _fast(x) if depth < MAX_DEPTH else None
+                    r = fast(x) if depth < MAX_DEPTH else None
                     if r is None:
                         self._enc(x, depth + 1)
                     else:
@@ -358,7 +373,7 @@ class _Encoder:
                     out.append(" ^")
                 else:
                     out.append(" ")
-                    r = _fast(c) if depth < MAX_DEPTH else None
+                    r = fast(c) if depth < MAX_DEPTH else None
                     if r is None:
                         self._enc(c, depth + 1)
                     else:
@@ -373,7 +388,7 @@ def _plain_text(v: Any) -> str:
 def dumps(value: Any, *, dedup: bool = False) -> str:
     """Encode value as JARO text. dedup replaces repeated sub-trees with anchors."""
     try:
-        dd = Dedup(value, _plain_text, False) if dedup else None
+        dd = Dedup(value, _plain_text, False, _needs_quote) if dedup else None
         return _Encoder(dd).run(value)
     except RecursionError:
         raise JaroError("nesting too deep") from None
